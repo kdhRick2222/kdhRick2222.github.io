@@ -10,7 +10,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Your Name</title>
-    <style>
+       <style>
         body {
             font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
             text-align: center;
@@ -33,9 +33,9 @@
         }
         .profile img {
             width: 150px;
-            height: 200px;
+            height: 150px;
             border-radius: 50%;
-            margin-right: 10px;
+            margin-right: 20px;
         }
         .profile-text {
             max-width: 600px;
@@ -43,18 +43,30 @@
         h1 {
             font-size: 2.5em;
         }
+        .links {
+            margin-top: 20px;
+        }
         .links a {
             display: inline-block;
             margin: 15px;
+            padding: 10px 20px;
             text-decoration: none;
-            color: #0073e6;
-            font-size: 1.3em;
+            color: white;
+            background-color: #0073e6;
+            border-radius: 5px;
+            font-size: 1.2em;
+            transition: background-color 0.3s;
+        }
+        .links a:hover {
+            background-color: #005bb5;
         }
         .publications {
             margin-top: 60px;
             max-width: 1000px;
             text-align: left;
             width: 90%;
+            border-top: 2px solid #ccc;
+            padding-top: 30px;
         }
         .publications h2 {
             font-size: 2.2em;
@@ -69,10 +81,10 @@
             padding-bottom: 25px;
         }
         .publication-image {
-            width: 320px;
+            width: 280px;
             height: 180px;
             margin-right: 25px;
-/*             object-fit: cover; */
+            object-fit: cover;
         }
         .publication-description {
             flex: 1;
@@ -93,7 +105,7 @@
 </head>
 <body>
     <div class="profile">
-<!--         <img src="images/my_picture.png" alt="Your Photo"> -->
+        <img src="images/my_picture.png" alt="Your Photo">
         <div class="profile-text">
             <h1>Hello, I'm Daehyun Kim</h1>
             <p>AI & Computer Vision</p>
@@ -103,7 +115,7 @@
     <div class="links">
         <a href="https://github.com/kdhRick2222">GitHub</a>
         <a href="https://scholar.google.com/citations?user=gctcrlcAAAAJ&hl=ko">Google Scholar</a>
-        <a href="daehyun@hanyang.ac.kr">Email</a>
+        <a href="mailto:daehyun@hanyang.ac.kr">Email</a>
     </div>
     <div class="publications">
         <h2>Publications</h2>
