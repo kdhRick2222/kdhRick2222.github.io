@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daehyun Kim</title>
+    <title>Your Name</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -11,6 +11,24 @@
             margin: 0;
             padding: 50px;
             background-color: #f9f9f9;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .profile {
+            display: flex;
+            align-items: center;
+            max-width: 800px;
+            text-align: left;
+        }
+        .profile img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            margin-right: 20px;
+        }
+        .profile-text {
+            max-width: 600px;
         }
         h1 {
             font-size: 2.5em;
@@ -26,15 +44,46 @@
             color: #0073e6;
             font-size: 1.2em;
         }
+        .publications {
+            margin-top: 50px;
+            max-width: 800px;
+            text-align: left;
+        }
+        .publications h2 {
+            font-size: 2em;
+            text-align: center;
+        }
+        .publications ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .publications li {
+            font-size: 1.2em;
+            margin: 10px 0;
+        }
     </style>
 </head>
 <body>
-    <h1>Hi I'm Daehyun Kim</h1>
-    <p>Researcher | AI & Computer Vision</p>
+    <div class="profile">
+        <img src="your-photo.jpg" alt="Your Photo">
+        <div class="profile-text">
+            <h1>Hi, I'm Daehyun Kim</h1>
+            <p>Researcher | AI & Computer Vision</p>
+            <p>I am a PhD student in Artificial Intelligence department at the Hanyang University in Seoul, researching low-light image enhancement, exposure correction, and anomaly detection. I am advised by Prof. Taehyun Kim</p>
+        </div>
+    </div>
     <div class="links">
         <a href="https://github.com/kdhRick2222">GitHub</a>
         <a href="https://scholar.google.com/citations?user=gctcrlcAAAAJ&hl=ko">Google Scholar</a>
         <a href="daehyun@hanyang.ac.kr">Email</a>
+    </div>
+    <div class="publications">
+        <h2>Publications</h2>
+        <ul>
+            <li><a href="https://example.com/publication1">Title of Paper 1</a> - Conference/Journal, Year</li>
+            <li><a href="https://example.com/publication2">Title of Paper 2</a> - Conference/Journal, Year</li>
+            <li><a href="https://example.com/publication3">Title of Paper 3</a> - Conference/Journal, Year</li>
+        </ul>
     </div>
 </body>
 </html>
