@@ -53,13 +53,25 @@
             font-size: 2em;
             text-align: center;
         }
-        .publications ul {
-            list-style-type: none;
-            padding: 0;
+        .publication-item {
+            display: flex;
+            flex-direction: row;
+            align-items: flex-start;
+            margin-bottom: 15px;
         }
-        .publications li {
+        .publication-description {
+            width: 40%;
+            font-size: 1em;
+            color: #333;
+            padding-right: 15px;
+        }
+        .publication-details {
+            width: 60%;
+        }
+        .publication-details a {
             font-size: 1.2em;
-            margin: 10px 0;
+            text-decoration: none;
+            color: #0073e6;
         }
     </style>
 </head>
@@ -79,11 +91,25 @@
     </div>
     <div class="publications">
         <h2>Publications</h2>
-        <ul>
-            <li><a href="https://example.com/publication1">Title of Paper 1</a> - Conference/Journal, Year</li>
-            <li><a href="https://example.com/publication2">Title of Paper 2</a> - Conference/Journal, Year</li>
-            <li><a href="https://example.com/publication3">Development of artificial neural networks for early prediction of intestinal perforation in preterm infants</a> - Scientific Reports (Journal), 2022</li>
-        </ul>
+        <div class="publication-item">
+            <div class="publication-description">This paper explores deep learning for image enhancement.</div>
+            <div class="publication-details">
+                <a href="https://example.com/publication1">Title of Paper 1</a> - Conference/Journal, Year
+            </div>
+        </div>
+        <div class="publication-item">
+            <div class="publication-description">A novel approach to object detection using neural networks.</div>
+            <div class="publication-details">
+                <a href="https://example.com/publication2">Title of Paper 2</a> - Conference/Journal, Year
+            </div>
+        </div>
+        <div class="publication-item">
+            <div class="publication-description">Research on improving image segmentation with AI techniques.</div>
+            <div class="publication-details">
+                <a href="https://example.com/publication3">Title of Paper 3</a> - Conference/Journal, Year
+            </div>
+        </div>
     </div>
 </body>
 </html>
+
