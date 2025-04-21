@@ -28,18 +28,18 @@
     .profile {
       display: flex;
       flex-wrap: wrap;
-      justify-content: center;
       align-items: center;
       max-width: 900px;
       width: 100%;
-      text-align: center;
+      text-align: left;
+      justify-content: flex-start;
       margin-bottom: 20px;
     }
 
     .profile img {
       width: 120px;
       height: auto;
-      margin-bottom: 15px;
+      margin-right: 20px;
     }
 
     .profile-text {
@@ -87,18 +87,18 @@
 
     .publication-item {
       display: flex;
-      flex-direction: column;
-      align-items: center;
+      flex-direction: row;
+      align-items: flex-start;
       margin-bottom: 40px;
       border-bottom: 1px solid #ddd;
       padding-bottom: 25px;
     }
 
     .publication-image {
-      width: 100%;
-      max-width: 320px;
+      width: 280px;
       height: auto;
-      margin-bottom: 15px;
+      margin-right: 25px;
+      flex-shrink: 0;
     }
 
     .publication-details {
@@ -122,12 +122,36 @@
     }
 
     @media (max-width: 768px) {
-      h1 {
-        font-size: 1.6em;
+      .profile {
+        flex-direction: column;
+        text-align: center;
+        align-items: center;
+      }
+
+      .profile img {
+        margin-bottom: 15px;
+        margin-right: 0;
+      }
+
+      .profile-text {
+        padding: 0;
+      }
+
+      .publication-item {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .publication-image {
+        margin-right: 0;
+        margin-bottom: 15px;
+        width: 100%;
+        max-width: 320px;
       }
 
       .publication-details {
         font-size: 0.95em;
+        text-align: center;
       }
 
       .publication-details a {
@@ -137,7 +161,6 @@
   </style>
 </head>
 <body>
-
   <div class="profile">
     <img src="images/my_picture.jpeg" alt="Your Photo" />
     <div class="profile-text">
@@ -156,7 +179,6 @@
   <div class="publications">
     <h2>Publications</h2>
 
-    <!-- publication 1 -->
     <div class="publication-item">
       <img src="images/exposure_slot.png" alt="Exposure-slot" class="publication-image" />
       <div class="publication-details">
@@ -167,7 +189,6 @@
       </div>
     </div>
 
-    <!-- publication 2 -->
     <div class="publication-item">
       <img src="images/clode_2025_.png" alt="CLODE" class="publication-image" />
       <div class="publication-details">
@@ -178,7 +199,6 @@
       </div>
     </div>
 
-    <!-- publication 3 -->
     <div class="publication-item">
       <img src="images/sanflow_2023.png" alt="SANFlow" class="publication-image" />
       <div class="publication-details">
@@ -189,12 +209,11 @@
       </div>
     </div>
 
-    <!-- other publications -->
     <div class="publication-item">
       <div class="publication-details">
         <a href="https://link.springer.com/article/10.1007/s00431-024-05505-7">Machine learning-based analysis for prediction of surgical necrotizing enterocolitis...</a><br />
         <em>European Journal of Pediatrics, 2024</em><br />
-        Seung Hyun Kim, Yoon Ju Oh, Joonhyuk Son, Donggoo Jung, <b>Daehyun Kim</b>, Soo Rack Ryu, Jae Yoon Na, Jae Kyoon Hwang, Tae Hyun Kim, Hyun-Kyung Park
+        Seung Hyun Kim, Yoon Ju Oh, Joonhyuk Son, Donggoo Jung, <b>Daehyun Kim</b>, ...
       </div>
     </div>
 
@@ -202,7 +221,7 @@
       <div class="publication-details">
         <a href="https://karger.com/neo/article/120/5/652/854411">Learning-based longitudinal prediction models for mortality risk...</a><br />
         <em>Neonatology, 2023</em><br />
-        Jae Yoon Na*, Donggoo Jung*, Jong Ho Cha, <b>Daehyun Kim</b>, Joonhyuk Son, Jae Kyoon Hwang, Tae Hyun Kim, Hyun-Kyung Park
+        Jae Yoon Na*, Donggoo Jung*, Jong Ho Cha, <b>Daehyun Kim</b>, ...
       </div>
     </div>
 
@@ -210,7 +229,7 @@
       <div class="publication-details">
         <a href="https://www.frontiersin.org/articles/10.3389/fped.2023.1155921/full">Two-stage learning-based prediction of bronchopulmonary dysplasia...</a><br />
         <em>Frontiers in Pediatrics, 2023</em><br />
-        Jae Kyoon Hwang*, <b>Dae Hyun Kim*</b>, Jae Yoon Na*, Joonhyuk Son, Yoon Ju Oh, Donggoo Jung, Chang-Ryul Kim, Tae Hyun Kim, Hyun-Kyung Park
+        Jae Kyoon Hwang*, <b>Dae Hyun Kim*</b>, ...
       </div>
     </div>
 
@@ -218,7 +237,7 @@
       <div class="publication-details">
         <a href="https://www.nature.com/articles/s41598-022-16273-5">Development of artificial neural networks for early prediction...</a><br />
         <em>Scientific Reports, 2022</em><br />
-        Joonhyuk Son*, <b>Daehyun Kim*</b>, Jae Yoon Na*, Donggoo Jung, Ja-Hye Ahn, Tae Hyun Kim, Hyun-Kyung Park
+        Joonhyuk Son*, <b>Daehyun Kim*</b>, ...
       </div>
     </div>
 
