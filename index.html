@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Daehyun Kim</title>
+  <style>
+    body {
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #f9f9f9;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      line-height: 1.6;
+    }
+
+    h1 {
+      font-size: 2em;
+      margin-bottom: 10px;
+    }
+
+    p {
+      margin-bottom: 10px;
+    }
+
+    .profile {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      max-width: 900px;
+      width: 100%;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .profile img {
+      width: 120px;
+      height: auto;
+      margin-bottom: 15px;
+    }
+
+    .profile-text {
+      flex: 1;
+      padding: 0 15px;
+      max-width: 600px;
+    }
+
+    .links {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 10px;
+    }
+
+    .links a {
+      display: inline-block;
+      margin: 10px 8px;
+      padding: 6px 12px;
+      text-decoration: none;
+      color: white;
+      background-color: #B0C4DE;
+      border-radius: 5px;
+      font-size: 0.95em;
+      transition: background-color 0.3s;
+    }
+
+    .links a:hover {
+      background-color: #98afc9;
+    }
+
+    .publications {
+      margin-top: 30px;
+      max-width: 1000px;
+      width: 100%;
+      border-top: 2px solid #ccc;
+      padding-top: 30px;
+    }
+
+    .publications h2 {
+      font-size: 1.8em;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .publication-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 40px;
+      border-bottom: 1px solid #ddd;
+      padding-bottom: 25px;
+    }
+
+    .publication-image {
+      width: 100%;
+      max-width: 320px;
+      height: auto;
+      margin-bottom: 15px;
+    }
+
+    .publication-details {
+      text-align: left;
+      padding: 0 10px;
+      max-width: 900px;
+      font-size: 1em;
+      color: #333;
+    }
+
+    .publication-details a {
+      font-size: 1.1em;
+      text-decoration: none;
+      color: #0073e6;
+    }
+
+    .publication-details .code-link {
+      font-size: 0.95em;
+      color: #0073e6;
+      text-decoration: none;
+    }
+
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 1.6em;
+      }
+
+      .publication-details {
+        font-size: 0.95em;
+      }
+
+      .publication-details a {
+        font-size: 1em;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="profile">
+    <img src="images/my_picture.jpeg" alt="Your Photo" />
+    <div class="profile-text">
+      <h1>Hello, I'm Daehyun Kim</h1>
+      <p>I am a PhD student in visual intelligence lab (VILAB) at the Hanyang University in Seoul. Interested in solving low-level computer vision problems such as low-light image enhancement, exposure correction, and anomaly detection. Prof. Tae Hyun Kim is advising me.</p>
+    </div>
+  </div>
+
+  <div class="links">
+    <a href="https://github.com/kdhRick2222">GitHub</a>
+    <a href="https://scholar.google.com/citations?user=gctcrlcAAAAJ&hl=ko">Google Scholar</a>
+    <a href="mailto:daehyun@hanyang.ac.kr">Email</a>
+    <a href="https://sites.google.com/view/lliger9/home?authuser=0">VILAB</a>
+  </div>
+
+  <div class="publications">
+    <h2>Publications</h2>
+
+    <!-- publication 1 -->
+    <div class="publication-item">
+      <img src="images/exposure_slot.png" alt="Exposure-slot" class="publication-image" />
+      <div class="publication-details">
+        <a href="https://openreview.net/forum?id=aqupbYLxad">Exposure-slot: Exposure-centric representations learning with Slot-in-Slot Attention</a><br />
+        <em><b>CVPR, 2025</b></em> | <a class="code-link" href="https://github.com/kdhRick2222/Exposure-slot">code</a><br />
+        Donggoo Jung*, <b>Daehyun Kim*</b>, Tae Hyun Kim<br />
+        We propose Exposure-slot, a novel framework that integrates a prompt-based slot-in-slot attention mechanism to cluster exposed feature regions and learn exposure-centric features.
+      </div>
+    </div>
+
+    <!-- publication 2 -->
+    <div class="publication-item">
+      <img src="images/clode_2025_.png" alt="CLODE" class="publication-image" />
+      <div class="publication-details">
+        <a href="https://openreview.net/pdf?id=5p57uCUH8k">CLODE: Continuous Exposure Learning for Low-Light Image Enhancement using Neural ODEs</a><br />
+        <em><b>ICLR, 2025 (spotlight)</b></em> | <a class="code-link" href="https://github.com/dgjung0220/CLODE">code</a><br />
+        Donggoo Jung*, <b>Daehyun Kim*</b>, Tae Hyun Kim<br />
+        We formulate low-light enhancement as a continuous system using Neural ODEs, allowing stable curve-based exposure correction without sensitivity to iteration count.
+      </div>
+    </div>
+
+    <!-- publication 3 -->
+    <div class="publication-item">
+      <img src="images/sanflow_2023.png" alt="SANFlow" class="publication-image" />
+      <div class="publication-details">
+        <a href="https://proceedings.neurips.cc/paper_files/paper/2023/hash/ee74a6ade401e200985e2421b20bbae4-Abstract-Conference.html">SANFlow: Semantic-Aware Normalizing Flow for Anomaly Detection</a><br />
+        <em><b>NeurIPS, 2023</b></em> | <a class="code-link" href="https://github.com/kdhRick2222/SANFlow">code</a><br />
+        <b>Daehyun Kim</b>, Sungyong Baik, Tae Hyun Kim<br />
+        SANFlow maps features to diverse distributions based on semantic location, improving discrimination between normal and abnormal patterns.
+      </div>
+    </div>
+
+    <!-- other publications -->
+    <div class="publication-item">
+      <div class="publication-details">
+        <a href="https://link.springer.com/article/10.1007/s00431-024-05505-7">Machine learning-based analysis for prediction of surgical necrotizing enterocolitis...</a><br />
+        <em>European Journal of Pediatrics, 2024</em><br />
+        Seung Hyun Kim, Yoon Ju Oh, Joonhyuk Son, Donggoo Jung, <b>Daehyun Kim</b>, ...
+      </div>
+    </div>
+
+    <div class="publication-item">
+      <div class="publication-details">
+        <a href="https://karger.com/neo/article/120/5/652/854411">Learning-based longitudinal prediction models for mortality risk...</a><br />
+        <em>Neonatology, 2023</em><br />
+        Jae Yoon Na*, Donggoo Jung*, Jong Ho Cha, <b>Daehyun Kim</b>, ...
+      </div>
+    </div>
+
+    <div class="publication-item">
+      <div class="publication-details">
+        <a href="https://www.frontiersin.org/articles/10.3389/fped.2023.1155921/full">Two-stage learning-based prediction of bronchopulmonary dysplasia...</a><br />
+        <em>Frontiers in Pediatrics, 2023</em><br />
+        Jae Kyoon Hwang*, <b>Dae Hyun Kim*</b>, ...
+      </div>
+    </div>
+
+    <div class="publication-item">
+      <div class="publication-details">
+        <a href="https://www.nature.com/articles/s41598-022-16273-5">Development of artificial neural networks for early prediction...</a><br />
+        <em>Scientific Reports, 2022</em><br />
+        Joonhyuk Son*, <b>Daehyun Kim*</b>, ...
+      </div>
+    </div>
+
+    <p style="text-align: center;">* indicates equal contribution</p>
+  </div>
+</body>
+</html>
