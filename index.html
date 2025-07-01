@@ -4,161 +4,161 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Daehyun Kim</title>
-  <style>
-    body {
-      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-      margin: 0;
-      padding: 20px;
-      background-color: #f9f9f9;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      line-height: 1.6;
-    }
+<style>
+  body {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #f9f9f9;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    line-height: 1.6;
+  }
 
-    h1 {
-      font-size: 2em;
-      margin-bottom: 10px;
-    }
+  h1 {
+    font-size: 2em;
+    margin-bottom: 10px;
+  }
 
-    p {
-      margin-bottom: 10px;
-    }
+  p {
+    margin-bottom: 10px;
+  }
 
+  .profile {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    max-width: 750px;
+    width: 100%;
+    text-align: left;
+    justify-content: flex-start;
+    margin-bottom: 20px;
+  }
+
+  .profile img {
+    width: 120px;
+    height: auto;
+    margin-right: 20px;
+  }
+
+  .profile-text {
+    flex: 1;
+    padding: 0 15px;
+    max-width: 600px;
+  }
+
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 10px;
+  }
+
+  .links a {
+    display: inline-block;
+    margin: 10px 8px;
+    padding: 6px 12px;
+    text-decoration: none;
+    color: white;
+    background-color: #B0C4DE;
+    border-radius: 5px;
+    font-size: 0.95em;
+    transition: background-color 0.3s;
+  }
+
+  .links a:hover {
+    background-color: #98afc9;
+  }
+
+  .publications, .service {
+    margin-top: 30px;
+    max-width: 800px;
+    width: 100%;
+    border-top: 2px solid #ccc;
+    padding-top: 30px;
+  }
+
+  .publications h2, .service h2 {
+    font-size: 1.8em;
+    text-align: center;
+    margin-bottom: 30px;
+  }
+
+  .publication-item {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    margin-bottom: 40px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 25px;
+  }
+
+  .publication-image {
+    width: 280px;
+    height: auto;
+    margin-right: 25px;
+    flex-shrink: 0;
+  }
+
+  .publication-details {
+    text-align: left;
+    padding: 0 10px;
+    max-width: 750px;
+    font-size: 1em;
+    color: #333;
+  }
+
+  .publication-details a {
+    font-size: 1.1em;
+    text-decoration: none;
+    color: #0073e6;
+  }
+
+  .publication-details .code-link {
+    font-size: 0.95em;
+    color: #0073e6;
+    text-decoration: none;
+  }
+
+  @media (max-width: 768px) {
     .profile {
-      display: flex;
-      flex-wrap: wrap;
+      flex-direction: column;
+      text-align: center;
       align-items: center;
-      max-width: 900px;
-      width: 100%;
-      text-align: left;
-      justify-content: flex-start;
-      margin-bottom: 20px;
     }
 
     .profile img {
-      width: 120px;
-      height: auto;
-      margin-right: 20px;
+      margin-bottom: 15px;
+      margin-right: 0;
     }
 
     .profile-text {
-      flex: 1;
-      padding: 0 15px;
-      max-width: 600px;
-    }
-
-    .links {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      margin-top: 10px;
-    }
-
-    .links a {
-      display: inline-block;
-      margin: 10px 8px;
-      padding: 6px 12px;
-      text-decoration: none;
-      color: white;
-      background-color: #B0C4DE;
-      border-radius: 5px;
-      font-size: 0.95em;
-      transition: background-color 0.3s;
-    }
-
-    .links a:hover {
-      background-color: #98afc9;
-    }
-
-    .publications {
-      margin-top: 30px;
-      max-width: 1000px;
-      width: 100%;
-      border-top: 2px solid #ccc;
-      padding-top: 30px;
-    }
-
-    .publications h2 {
-      font-size: 1.8em;
-      text-align: center;
-      margin-bottom: 30px;
+      padding: 0;
     }
 
     .publication-item {
-      display: flex;
-      flex-direction: row;
-      align-items: flex-start;
-      margin-bottom: 40px;
-      border-bottom: 1px solid #ddd;
-      padding-bottom: 25px;
+      flex-direction: column;
+      align-items: center;
     }
 
     .publication-image {
-      width: 280px;
-      height: auto;
-      margin-right: 25px;
-      flex-shrink: 0;
+      margin-right: 0;
+      margin-bottom: 15px;
+      width: 100%;
+      max-width: 320px;
     }
 
     .publication-details {
-      text-align: left;
-      padding: 0 10px;
-      max-width: 900px;
-      font-size: 1em;
-      color: #333;
+      font-size: 0.95em;
+      text-align: center;
     }
 
     .publication-details a {
-      font-size: 1.1em;
-      text-decoration: none;
-      color: #0073e6;
+      font-size: 1em;
     }
-
-    .publication-details .code-link {
-      font-size: 0.95em;
-      color: #0073e6;
-      text-decoration: none;
-    }
-
-    @media (max-width: 768px) {
-      .profile {
-        flex-direction: column;
-        text-align: center;
-        align-items: center;
-      }
-
-      .profile img {
-        margin-bottom: 15px;
-        margin-right: 0;
-      }
-
-      .profile-text {
-        padding: 0;
-      }
-
-      .publication-item {
-        flex-direction: column;
-        align-items: center;
-      }
-
-      .publication-image {
-        margin-right: 0;
-        margin-bottom: 15px;
-        width: 100%;
-        max-width: 320px;
-      }
-
-      .publication-details {
-        font-size: 0.95em;
-        text-align: center;
-      }
-
-      .publication-details a {
-        font-size: 1em;
-      }
-    }
-  </style>
+  }
+</style>
 </head>
 <body>
   <div class="profile">
