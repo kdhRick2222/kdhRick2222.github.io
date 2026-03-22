@@ -1,475 +1,53 @@
-<!DOCTYPE html>
-<html>
+<div class="title-with-logo">
+  <img src="./assets/logo.png" alt="UCMNet Logo" class="title-logo">
+  <h1 class="title is-2 publication-title title-text">
+    UCMNet: Uncertainty-Aware Context Memory Network for Under-Display Camera Image Restoration
+  </h1>
+</div>
 
-<head>
-  <meta charset="utf-8">
-  <meta name="description" content="KEEP for Face Video Super-Resolution">
-  <meta name="keywords" content="KEEP, Face Video Super-Resolution, Kalman Filter, Temporal Propogation">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>KEEP for Face Video Super-Resolution</title>
+<div class="is-size-5 publication-authors" style="margin-top: 1rem;">
+  <p>
+    <a href="https://kdhrick2222.github.io/" target="_blank">Daehyun Kim</a><sup>1</sup>
+    &nbsp;·&nbsp;
+    <a href="https://sites.google.com/view/lliger9/home?authuser=0" target="_blank">Youngmin Kim</a><sup>1,2</sup>
+    &nbsp;·&nbsp;
+    <a href="https://sites.google.com/view/lliger9/home?authuser=0" target="_blank">Yoon Ju Oh</a><sup>1</sup>
+    &nbsp;·&nbsp;
+    <a href="https://scholar.google.com/citations?hl=ko&user=8soccsoAAAAJ" target="_blank">Tae Hyun Kim</a><sup>1†</sup>
+  </p>
+</div>
 
-  <!-- Global site tag (gtag.js) - Google Analytics -->
-  <!--   <script async src="https://www.googletagmanager.com/gtag/js?id=G-PYVRSFMDRL"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
+<div class="is-size-5 publication-authors">
+  <p>
+    <sup>1</sup>Hanyang University &nbsp;&nbsp;
+    <sup>2</sup>Agency for Defense Development (ADD)
+  </p>
+</div>
 
-    function gtag() {
-      dataLayer.push(arguments);
-    }
+<div class="is-size-6 publication-authors">
+  <p>
+    <sup>†</sup> Co-corresponding author
+  </p>
+</div>
 
-    gtag('js', new Date());
-
-    gtag('config', 'G-PYVRSFMDRL');
-
-  </script> -->
-  <style>
-    .hr {
-      width: 100%;
-      height: 1px;
-      margin: 48px 0;
-      background-color: #d6dbdf;
-    }
-  </style>
-
-  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
-  <link rel="stylesheet" href="./assets/css/bulma.min.css">
-  <link rel="stylesheet" href="./assets/css/bulma-carousel.min.css">
-  <link rel="stylesheet" href="./assets/css/bulma-slider.min.css">
-  <link rel="stylesheet" href="./assets/css/fontawesome.all.min.css">
-  <link rel="stylesheet" href="./assets/css/index.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
-
-  <!-- custom css file  -->
-  <link rel="stylesheet" href="./assets/css/style.css">
-  <link rel="stylesheet" href="./assets/css/twentytwenty.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-</head>
-
-<body>
-
-  <section class="hero">
-    <div class="hero-body">
-      <div class="container is-max-desktop head">
-        <div class="columns is-centered">
-          <div class="column has-text-centered head">
-            <h1 class="title is-1 publication-title">
-              <font color="#fb5a42">KEEP</font>
-            </h1>
-
-            <h1 class="title is-3 publication-title">
-              <font color="#fb5a42">K</font>alman-Inspired
-              F<font color="#fb5a42">E</font>atur<font color="#fb5a42">E</font>
-              <font color="#fb5a42">P</font>ropagation for Video Face Super-Resolution
-            </h1>
-
-            <div class="is-size-5 publication-authors">
-              <span class="author-block">
-                <a href="https://jnjaby.github.io/">Ruicheng Feng</a>,&nbsp;&nbsp;</span>
-              <span class="author-block">
-                <a href="https://li-chongyi.github.io/">Chongyi Li</a>,&nbsp;&nbsp;</span>
-              <span class="author-block">
-                <a href="https://www.mmlab-ntu.com/person/ccloy/">Chen Change Loy</a></span>
-              <span class="author-block">
-            </div>
-
-            <div class="is-size-5 publication-authors">
-              <span class="author-block">S-Lab, Nanyang Technological University </span>
-            </div>
-
-            <div class="is-size-5 publication-authors">
-              <span class="author-block">ECCV 2024</span>
-            </div>
-
-            <div class="column has-text-centered">
-              <div class="publication-links">
-                <!-- PDF Link. -->
-                <!-- <span class="link-block">
-                <a href="./xx.pdf" target="_blank"
-                   class="external-link button is-normal is-rounded is-dark">
-                  <span class="icon">
-                      <i class="fas fa-file-pdf"></i>
-                  </span>
-                  <span>Paper</span>
-                </a>
-              </span> -->
-                <!-- arXiv Link. -->
-                <span class="link-block">
-                  <a href="https://arxiv.org/abs/2408.05205" target="_blank"
-                    class="external-link button is-normal is-rounded is-dark">
-                    <span class="icon">
-                      <i class="ai ai-arxiv"></i>
-                    </span>
-                    <span>arXiv</span>
-                  </a>
-                </span>
-
-                <!-- Code Link. -->
-                <span class="link-block">
-                  <a href="https://github.com/jnjaby/KEEP" target="_blank"
-                    class="external-link button is-normal is-rounded is-dark">
-                    <span class="icon">
-                      <i class="fab fa-github"></i>
-                    </span>
-                    <span>Code</span>
-                  </a>
-                </span>
-
-                <!-- Demo Link. -->
-                <span class="link-block">
-                  <a href="https://huggingface.co/spaces/rcfeng/KEEP" target="_blank"
-                    class="external-link button is-normal is-rounded is-dark">
-                    <span class="icon">
-                      <img src="./assets/images/hf.png">
-                    </span>
-                    <span>Demo</span>
-                  </a>
-                </span>
-
-                <!-- Video Link. -->
-                <span class="link-block">
-                  <a href="https://www.youtube.com/watch?v=vbIs1L8et_s/" target="_blank"
-                    class="external-link button is-normal is-rounded is-dark">
-                    <span class="icon">
-                      <i class="fab fa-youtube"></i>
-                    </span>
-                    <span>Video</span>
-                  </a>
-                </span>
-              </div>
-
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-
-  <!-- first row -->
-  <section class="hero is-light is-small">
-    <div class="hero-body">
-      <div class="container">
-        <div id="results-carousel" class="carousel results-carousel">
-
-          <div class="item">
-            <div class="twentytwenty-container" data-orientation="horizontal" ratio="1.">
-              <div class="desc">Synthetic</div>
-              <div class="video">
-                <video muted autoplay="autoplay" loop="loop" width="100%">
-                  <source src="./assets/videos_reduced/syn_01_lq.mp4" type="video/mp4">
-                </video>
-              </div>
-              <div class="video">
-                <video muted autoplay="autoplay" loop="loop" width="100%">
-                  <source src="./assets/videos_reduced/syn_01_ours.mp4" type="video/mp4">
-                </video>
-              </div>
-            </div>
-          </div>
-
-          <div class="item">
-            <div class="twentytwenty-container" data-orientation="horizontal" ratio="1.">
-              <div class="desc">Synthetic</div>
-              <div class="video">
-                <video muted autoplay="autoplay" loop="loop" width="100%">
-                  <source src="./assets/videos_reduced/syn_02_lq.mp4" type="video/mp4">
-                </video>
-              </div>
-              <div class="video">
-                <video muted autoplay="autoplay" loop="loop" width="100%">
-                  <source src="./assets/videos_reduced/syn_02_ours.mp4" type="video/mp4">
-                </video>
-              </div>
-            </div>
-          </div>
-
-          <div class="item">
-            <div class="twentytwenty-container" data-orientation="horizontal" ratio="1.">
-              <div class="desc">Synthetic</div>
-              <div class="video">
-                <video muted autoplay="autoplay" loop="loop" width="100%">
-                  <source src="./assets/videos_reduced/syn_03_lq.mp4" type="video/mp4">
-                </video>
-              </div>
-              <div class="video">
-                <video muted autoplay="autoplay" loop="loop" width="100%">
-                  <source src="./assets/videos_reduced/syn_03_ours.mp4" type="video/mp4">
-                </video>
-              </div>
-            </div>
-          </div>
-
-          <div class="item">
-            <div class="twentytwenty-container" data-orientation="horizontal" ratio="1.">
-              <div class="desc">Synthetic</div>
-              <div class="video">
-                <video muted autoplay="autoplay" loop="loop" width="100%">
-                  <source src="./assets/videos_reduced/syn_04_lq.mp4" type="video/mp4">
-                </video>
-              </div>
-              <div class="video">
-                <video muted autoplay="autoplay" loop="loop" width="100%">
-                  <source src="./assets/videos_reduced/syn_04_ours.mp4" type="video/mp4">
-                </video>
-              </div>
-            </div>
-          </div>
-
-          <div class="item">
-            <div class="twentytwenty-container" data-orientation="horizontal" ratio="1.">
-              <div class="desc">Synthetic</div>
-              <div class="video">
-                <video muted autoplay="autoplay" loop="loop" width="100%">
-                  <source src="./assets/videos_reduced/syn_05_lq.mp4" type="video/mp4">
-                </video>
-              </div>
-              <div class="video">
-                <video muted autoplay="autoplay" loop="loop" width="100%">
-                  <source src="./assets/videos_reduced/syn_05_ours.mp4" type="video/mp4">
-                </video>
-              </div>
-            </div>
-          </div>
-
-          <div class="item">
-            <div class="twentytwenty-container" data-orientation="horizontal" ratio="1.">
-              <div class="desc">Synthetic</div>
-              <div class="video">
-                <video muted autoplay="autoplay" loop="loop" width="100%">
-                  <source src="./assets/videos_reduced/syn_06_lq.mp4" type="video/mp4">
-                </video>
-              </div>
-              <div class="video">
-                <video muted autoplay="autoplay" loop="loop" width="100%">
-                  <source src="./assets/videos_reduced/syn_06_ours.mp4" type="video/mp4">
-                </video>
-              </div>
-            </div>
-          </div>
-
-        </div>
-      </div>
-  </section>
-
-
-  <!-- second row -->
-  <section class="hero is-light is-small">
-    <div class="hero-body">
-      <div class="container">
-        <div id="results-carousel" class="carousel results-carousel">
-
-          <div class="item">
-            <div class="video">
-              <video muted autoplay="autoplay" loop="loop" width="100%">
-                <source src="./assets/videos_reduced/real_01.mp4" type="video/mp4">
-              </video>
-            </div>
-          </div>
-
-          <div class="item">
-            <div class="video">
-              <video muted autoplay="autoplay" loop="loop" width="100%">
-                <source src="./assets/videos_reduced/real_02.mp4" type="video/mp4">
-              </video>
-            </div>
-          </div>
-
-          <div class="item">
-            <div class="video">
-              <video muted autoplay="autoplay" loop="loop" width="100%">
-                <source src="./assets/videos_reduced/real_03.mp4" type="video/mp4">
-              </video>
-            </div>
-          </div>
-
-          <div class="item">
-            <div class="video">
-              <video muted autoplay="autoplay" loop="loop" width="100%">
-                <source src="./assets/videos_reduced/real_04.mp4" type="video/mp4">
-              </video>
-            </div>
-          </div>
-
-          <div class="item">
-            <div class="video">
-              <video muted autoplay="autoplay" loop="loop" width="100%">
-                <source src="./assets/videos_reduced/real_05.mp4" type="video/mp4">
-              </video>
-            </div>
-          </div>
-
-        </div>
-      </div>
-  </section>
-
-
-  <section class="teaser">
-    <div class="container is-max-desktop">
-      <div class="columns is-centered has-text-centered">
-        <!-- <div class="column is-four-fifths"> -->
-        <div class="column">
-          <div class="content has-text-justified">
-            <ol type="a">
-              <br>
-              <b>Top</b>: Results on complex simulated degradations. <br>
-              <b>Bottom</b>: Results on real-world videos.
-            </ol>
-          </div>
-          <div class="hr"></div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="section">
-    <div class="container is-max-desktop">
-      <!-- Abstract. -->
-      <div class="columns is-centered has-text-centered">
-        <div class="column is-four-fifths">
-          <!-- <div class="column"> -->
-          <h2 class="title is-3">Abstract</h2>
-          <div class="content has-text-justified">
-            <p>
-              Despite the promising progress of face image super-resolution, video face super-resolution remains
-              relatively under-explored.
-              Existing approaches either adapt general video super-resolution networks to face datasets or apply
-              established face image super-resolution models independently on individual video frames.
-              These paradigms encounter challenges either in reconstructing facial details or maintaining temporal
-              consistency.
-              To address these issues, we introduce a novel framework called Kalman-inspired Feature Propagation
-              (<b>KEEP</b>), designed to maintain a stable face prior over time.
-              The Kalman filtering principles offer our method a recurrent ability to use the information from
-              previously restored frames to guide and regulate the restoration process of the current frame.
-              Extensive experiments demonstrate the effectiveness of our method in capturing facial details consistently
-              across video frames.
-            </p>
-          </div>
-        </div>
-      </div>
-      <!--/ Abstract. -->
-    </div>
-  </section>
-
-  <section class="section">
-    <div class="container is-max-desktop">
-      <div class="columns is-centered has-text-centered">
-        <!-- <div class="column is-four-fifths"> -->
-        <div class="column">
-          <h2 class="title is-3">Method</h2>
-          <div class="content has-text-justified">
-            <p>
-              <b>(a) The state space model </b> defines the underlying dynamic system, where <i>f</i> describes how the
-              latent states transit over time,
-              <i>g</i> is a generative model, and <i>h</i> models the degradation from clean frame to degraded frame.
-              <b>(b) Block diagram of Kalman filter model.</b> In each time step, a predictive state from previous frame
-              (Blue dash box) and new observed
-              state of current frame (Red dash box) are fused by Kalman gain from Kalman Gain Network (KGN) to produce
-              more accurate estimates.
-              The combined state is then used to generate the estimated clean frame.
-            </p>
-            <div class="column">
-              <img src="./assets/images/KEEP_diagram.png" />
-            </div>
-          </div>
-          <div class="content has-text-justified">
-            <p>
-              The proposed KEEP consists of four modules: encoder, decoder, Kalman filter network, and Cross-Frame
-              Attention (CFA).
-              An encoder and decoder construct a VQGAN generative model.
-              Kalman filter network is designed to incorporate Kalman filtering principles and promote temporal
-              information propagation
-              and maintain stable latent code priors.
-              Particularly, the filter recursively fuses observed state of current frame and predictive state from
-              previous frame to form
-              a more accurate posterior estimate of the current state.
-              In addition, cross-frame attention (CFA) layers are adopted in the decoder to further promote local
-              temporal consistency to
-              regularize the information propagation.
-              The integral designs enable evidence accumulation and enhance temporal consistency for face video
-              super-resolution.
-            </p>
-            <div class="column">
-              <img src="./assets/images/KEEP_pipeline.png" />
-            </div>
-          </div>
-          <!-- Paper video. -->
-          <div class="column">
-            <h2 class="title is-3">Video</h2>
-            <div class="publication-video">
-              <iframe src="https://www.youtube.com/embed/vbIs1L8et_s?rel=0&amp;showinfo=0" frameborder="0"
-                allow="autoplay; encrypted-media" allowfullscreen></iframe>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-
-  <section class="section" id="BibTeX">
-    <div class="container is-max-desktop content">
-      <h2 class="title">BibTeX</h2>
-      <pre><code>@InProceedings{feng2024keep,
-      title     = {Kalman-Inspired FEaturE Propagation for Video Face Super-Resolution},
-      author    = {Feng, Ruicheng and Li, Chongyi and Loy, Chen Change},
-      booktitle = {European Conference on Computer Vision (ECCV)},
-      year      = {2024}
-    }</code></pre>
-    </div>
-  </section>
-
-
-  <footer class="footer">
-    <div class="container">
-      <div class="content has-text-centered">
-        <a class="icon-link" href="https://jnjaby.github.io/projects/KEEP" target="_blank">
+<div class="column has-text-centered">
+  <div class="publication-links">
+    <span class="link-block">
+      <a href="#" target="_blank" class="external-link button is-normal is-rounded is-dark">
+        <span class="icon">
           <i class="fas fa-file-pdf"></i>
-        </a>
-        <a class="icon-link" href="https://github.com/jnjaby/KEEP" target="_blank">
+        </span>
+        <span>Paper</span>
+      </a>
+    </span>
+
+    <span class="link-block">
+      <a href="https://github.com/kdhRick2222/UCMNet/" target="_blank" class="external-link button is-normal is-rounded is-dark">
+        <span class="icon">
           <i class="fab fa-github"></i>
-        </a>
-        <a class="icon-link" href="https://youtu.be/vbIs1L8et_s" target="_blank">
-          <i class="fab fa-youtube"></i>
-        </a>
-      </div>
-
-      <div class="columns is-centered">
-        <div class="column is-8">
-          <div class="content">
-            <div class="columns is-centered">
-              <p>
-                This website template is borrowed from <a href="https://github.com/nerfies/nerfies.github.io"
-                  target="_blank">Here</a>.
-                Feel free to clone this website's <a href="https://github.com/sczhou/ProPainter_website"
-                  target="_blank">source code</a>.
-                Thank you!
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!--=================Visitor==========================-->
-      <!-- <div class="content has-text-centered" style="padding:0 0 0 0">
-      <img src='https://api.infinitescript.com/badgen/count?name=sczhou/ProPainter&ltext=Visitors&color=3977dd' alt='visitors'>
-    </div> -->
-
-    </div>
-  </footer>
-
-  <!-- custom js file  -->
-  <!-- <script defer src="./assets/js/fontawesome.all.min.js"></script> -->
-  <script src="./assets/js/bulma-carousel.min.js"></script>
-  <script src="./assets/js/bulma-slider.min.js"></script>
-  <script src="./assets/js/index.js"></script>
-  <script src="./assets/js/jquery.event.move.js"></script>
-  <script src="./assets/js/jquery.twentytwenty.js"></script>
-  <script>
-    $(function () {
-      $(".twentytwenty-container").twentytwenty();
-      // $(".twentytwenty-container", "#results-carousel").twentytwenty({default_offset_pct: 0.5, ratio: 0.5});
-    });
-  </script>
-</body>
-
-</html>
+        </span>
+        <span>Project Page</span>
+      </a>
+    </span>
+  </div>
+</div>
