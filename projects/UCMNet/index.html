@@ -1,266 +1,475 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Daehyun Kim</title>
-<style>
-  body {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    margin: 0;
-    padding: 20px;
-    background-color: #f9f9f9;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    line-height: 1.6;
-  }
+  <meta charset="utf-8">
+  <meta name="description" content="KEEP for Face Video Super-Resolution">
+  <meta name="keywords" content="KEEP, Face Video Super-Resolution, Kalman Filter, Temporal Propogation">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>KEEP for Face Video Super-Resolution</title>
 
-  h1 {
-    font-size: 2em;
-    margin-bottom: 10px;
-  }
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <!--   <script async src="https://www.googletagmanager.com/gtag/js?id=G-PYVRSFMDRL"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
 
-  p {
-    margin-bottom: 10px;
-  }
-
-  .profile {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    max-width: 750px;
-    width: 100%;
-    text-align: left;
-    justify-content: flex-start;
-    margin-bottom: 20px;
-  }
-
-  .profile img {
-    width: 120px;
-    height: auto;
-    margin-right: 20px;
-  }
-
-  .profile-text {
-    flex: 1;
-    padding: 0 15px;
-    max-width: 600px;
-  }
-
-  .links {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    margin-top: 10px;
-  }
-
-  .links a {
-    display: inline-block;
-    margin: 10px 8px;
-    padding: 6px 12px;
-    text-decoration: none;
-    color: white;
-    background-color: #B0C4DE;
-    border-radius: 5px;
-    font-size: 0.95em;
-    transition: background-color 0.3s;
-  }
-
-  .links a:hover {
-    background-color: #98afc9;
-  }
-
-  .publications, .service {
-    margin-top: 30px;
-    max-width: 800px;
-    width: 100%;
-    border-top: 2px solid #ccc;
-    padding-top: 30px;
-  }
-
-  .publications h2, .service h2 {
-    font-size: 1.8em;
-    text-align: center;
-    margin-bottom: 30px;
-  }
-
-  .publication-item {
-    display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-    margin-bottom: 40px;
-    border-bottom: 1px solid #ddd;
-    padding-bottom: 25px;
-  }
-
-  .publication-image {
-    width: 280px;
-    height: auto;
-    margin-right: 25px;
-    flex-shrink: 0;
-  }
-
-  .publication-details {
-    text-align: left;
-    padding: 0 10px;
-    max-width: 750px;
-    font-size: 1em;
-    color: #333;
-  }
-
-  .publication-details a {
-    font-size: 1.1em;
-    text-decoration: none;
-    color: #0073e6;
-  }
-
-  .publication-details .code-link {
-    font-size: 0.95em;
-    color: #0073e6;
-    text-decoration: none;
-  }
-
-  @media (max-width: 768px) {
-    .profile {
-      flex-direction: column;
-      text-align: center;
-      align-items: center;
+    function gtag() {
+      dataLayer.push(arguments);
     }
 
-    .profile img {
-      margin-bottom: 15px;
-      margin-right: 0;
-    }
+    gtag('js', new Date());
 
-    .profile-text {
-      padding: 0;
-    }
+    gtag('config', 'G-PYVRSFMDRL');
 
-    .publication-item {
-      flex-direction: column;
-      align-items: center;
-    }
-
-    .publication-image {
-      margin-right: 0;
-      margin-bottom: 15px;
+  </script> -->
+  <style>
+    .hr {
       width: 100%;
-      max-width: 320px;
+      height: 1px;
+      margin: 48px 0;
+      background-color: #d6dbdf;
     }
+  </style>
 
-    .publication-details {
-      font-size: 0.95em;
-      text-align: center;
-    }
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+  <link rel="stylesheet" href="./assets/css/bulma.min.css">
+  <link rel="stylesheet" href="./assets/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./assets/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./assets/css/fontawesome.all.min.css">
+  <link rel="stylesheet" href="./assets/css/index.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
 
-    .publication-details a {
-      font-size: 1em;
-    }
-  }
-</style>
+  <!-- custom css file  -->
+  <link rel="stylesheet" href="./assets/css/style.css">
+  <link rel="stylesheet" href="./assets/css/twentytwenty.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
+
 <body>
-  <div class="profile">
-    <img src="images/my_picture.jpeg" alt="Your Photo" />
-    <div class="profile-text">
-      <h1>Hello, I'm Daehyun Kim</h1>
-      <p>I recently received my Ph.D. under the supervision of Prof. Tae Hyun Kim. My research focuses on low-level computer vision problems such as low-light image enhancement, exposure correction, and under-display camera imaging. I am also interested in exploring how these techniques can be applied to real-world visual perception and interaction problems. If you are interested in collaboration, feel free to contact me.
-</p>
-    </div>
-  </div>
 
-  <div class="links">
-    <a href="https://github.com/kdhRick2222">GitHub</a>
-    <a href="https://scholar.google.com/citations?user=gctcrlcAAAAJ&hl=ko">Google Scholar</a>
-    <a href="mailto:daehyun@hanyang.ac.kr">Email</a>
-    <a href="https://www.linkedin.com/in/daehyun-kim-3a9383206/">LinkedIn</a>
-    <a href="https://sites.google.com/view/lliger9/home?authuser=0">VILAB</a>
-  </div>
+  <section class="hero">
+    <div class="hero-body">
+      <div class="container is-max-desktop head">
+        <div class="columns is-centered">
+          <div class="column has-text-centered head">
+            <h1 class="title is-1 publication-title">
+              <font color="#fb5a42">KEEP</font>
+            </h1>
 
-  <div class="publications">
-    <h2>Publications</h2>
+            <h1 class="title is-3 publication-title">
+              <font color="#fb5a42">K</font>alman-Inspired
+              F<font color="#fb5a42">E</font>atur<font color="#fb5a42">E</font>
+              <font color="#fb5a42">P</font>ropagation for Video Face Super-Resolution
+            </h1>
 
-      <div class="publication-item">
-      <img src="images/UDC.png" alt="UCMNet" class="publication-image" />
-      <div class="publication-details">
-        <a href="https://github.com/kdhRick2222/UCMNet">UCMNet: Uncertainty-Aware Context Memory Network for Under-Display Camera Image Restoration</a><br />
-        <em><b>CVPR, 2026</b></em> | <a class="code-link" href="https://github.com/kdhRick2222/UCMNet">code</a><br />
-        <b>Daehyun Kim</b>, Youngmin Kim, Yoon Ju Oh, Tae Hyun Kim<br />
-        We propose a lightweight Uncertainty-aware Context-Memory Network (UCMNet), for UDC image restoration. Unlike previous methods that apply uniform restoration, UCMNet performs uncertainty-aware adaptive processing to restore high-frequency details in regions with varying degradations.
+            <div class="is-size-5 publication-authors">
+              <span class="author-block">
+                <a href="https://jnjaby.github.io/">Ruicheng Feng</a>,&nbsp;&nbsp;</span>
+              <span class="author-block">
+                <a href="https://li-chongyi.github.io/">Chongyi Li</a>,&nbsp;&nbsp;</span>
+              <span class="author-block">
+                <a href="https://www.mmlab-ntu.com/person/ccloy/">Chen Change Loy</a></span>
+              <span class="author-block">
+            </div>
+
+            <div class="is-size-5 publication-authors">
+              <span class="author-block">S-Lab, Nanyang Technological University </span>
+            </div>
+
+            <div class="is-size-5 publication-authors">
+              <span class="author-block">ECCV 2024</span>
+            </div>
+
+            <div class="column has-text-centered">
+              <div class="publication-links">
+                <!-- PDF Link. -->
+                <!-- <span class="link-block">
+                <a href="./xx.pdf" target="_blank"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                  </span>
+                  <span>Paper</span>
+                </a>
+              </span> -->
+                <!-- arXiv Link. -->
+                <span class="link-block">
+                  <a href="https://arxiv.org/abs/2408.05205" target="_blank"
+                    class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="ai ai-arxiv"></i>
+                    </span>
+                    <span>arXiv</span>
+                  </a>
+                </span>
+
+                <!-- Code Link. -->
+                <span class="link-block">
+                  <a href="https://github.com/jnjaby/KEEP" target="_blank"
+                    class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="fab fa-github"></i>
+                    </span>
+                    <span>Code</span>
+                  </a>
+                </span>
+
+                <!-- Demo Link. -->
+                <span class="link-block">
+                  <a href="https://huggingface.co/spaces/rcfeng/KEEP" target="_blank"
+                    class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <img src="./assets/images/hf.png">
+                    </span>
+                    <span>Demo</span>
+                  </a>
+                </span>
+
+                <!-- Video Link. -->
+                <span class="link-block">
+                  <a href="https://www.youtube.com/watch?v=vbIs1L8et_s/" target="_blank"
+                    class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="fab fa-youtube"></i>
+                    </span>
+                    <span>Video</span>
+                  </a>
+                </span>
+              </div>
+
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-    
-    <div class="publication-item">
-      <img src="images/exposure_slot.png" alt="Exposure-slot" class="publication-image" />
-      <div class="publication-details">
-        <a href="https://openreview.net/forum?id=aqupbYLxad">Exposure-slot: Exposure-centric representations learning with Slot-in-Slot Attention</a><br />
-        <em><b>CVPR, 2025</b></em> | <a class="code-link" href="https://github.com/kdhRick2222/Exposure-slot">code</a><br />
-        Donggoo Jung*, <b>Daehyun Kim*</b>, Tae Hyun Kim<br />
-        We propose Exposure-slot, a novel framework that integrates a prompt-based slot-in-slot attention mechanism to cluster exposed feature regions and learn exposure-centric features.
+  </section>
+
+
+  <!-- first row -->
+  <section class="hero is-light is-small">
+    <div class="hero-body">
+      <div class="container">
+        <div id="results-carousel" class="carousel results-carousel">
+
+          <div class="item">
+            <div class="twentytwenty-container" data-orientation="horizontal" ratio="1.">
+              <div class="desc">Synthetic</div>
+              <div class="video">
+                <video muted autoplay="autoplay" loop="loop" width="100%">
+                  <source src="./assets/videos_reduced/syn_01_lq.mp4" type="video/mp4">
+                </video>
+              </div>
+              <div class="video">
+                <video muted autoplay="autoplay" loop="loop" width="100%">
+                  <source src="./assets/videos_reduced/syn_01_ours.mp4" type="video/mp4">
+                </video>
+              </div>
+            </div>
+          </div>
+
+          <div class="item">
+            <div class="twentytwenty-container" data-orientation="horizontal" ratio="1.">
+              <div class="desc">Synthetic</div>
+              <div class="video">
+                <video muted autoplay="autoplay" loop="loop" width="100%">
+                  <source src="./assets/videos_reduced/syn_02_lq.mp4" type="video/mp4">
+                </video>
+              </div>
+              <div class="video">
+                <video muted autoplay="autoplay" loop="loop" width="100%">
+                  <source src="./assets/videos_reduced/syn_02_ours.mp4" type="video/mp4">
+                </video>
+              </div>
+            </div>
+          </div>
+
+          <div class="item">
+            <div class="twentytwenty-container" data-orientation="horizontal" ratio="1.">
+              <div class="desc">Synthetic</div>
+              <div class="video">
+                <video muted autoplay="autoplay" loop="loop" width="100%">
+                  <source src="./assets/videos_reduced/syn_03_lq.mp4" type="video/mp4">
+                </video>
+              </div>
+              <div class="video">
+                <video muted autoplay="autoplay" loop="loop" width="100%">
+                  <source src="./assets/videos_reduced/syn_03_ours.mp4" type="video/mp4">
+                </video>
+              </div>
+            </div>
+          </div>
+
+          <div class="item">
+            <div class="twentytwenty-container" data-orientation="horizontal" ratio="1.">
+              <div class="desc">Synthetic</div>
+              <div class="video">
+                <video muted autoplay="autoplay" loop="loop" width="100%">
+                  <source src="./assets/videos_reduced/syn_04_lq.mp4" type="video/mp4">
+                </video>
+              </div>
+              <div class="video">
+                <video muted autoplay="autoplay" loop="loop" width="100%">
+                  <source src="./assets/videos_reduced/syn_04_ours.mp4" type="video/mp4">
+                </video>
+              </div>
+            </div>
+          </div>
+
+          <div class="item">
+            <div class="twentytwenty-container" data-orientation="horizontal" ratio="1.">
+              <div class="desc">Synthetic</div>
+              <div class="video">
+                <video muted autoplay="autoplay" loop="loop" width="100%">
+                  <source src="./assets/videos_reduced/syn_05_lq.mp4" type="video/mp4">
+                </video>
+              </div>
+              <div class="video">
+                <video muted autoplay="autoplay" loop="loop" width="100%">
+                  <source src="./assets/videos_reduced/syn_05_ours.mp4" type="video/mp4">
+                </video>
+              </div>
+            </div>
+          </div>
+
+          <div class="item">
+            <div class="twentytwenty-container" data-orientation="horizontal" ratio="1.">
+              <div class="desc">Synthetic</div>
+              <div class="video">
+                <video muted autoplay="autoplay" loop="loop" width="100%">
+                  <source src="./assets/videos_reduced/syn_06_lq.mp4" type="video/mp4">
+                </video>
+              </div>
+              <div class="video">
+                <video muted autoplay="autoplay" loop="loop" width="100%">
+                  <source src="./assets/videos_reduced/syn_06_ours.mp4" type="video/mp4">
+                </video>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+  </section>
+
+
+  <!-- second row -->
+  <section class="hero is-light is-small">
+    <div class="hero-body">
+      <div class="container">
+        <div id="results-carousel" class="carousel results-carousel">
+
+          <div class="item">
+            <div class="video">
+              <video muted autoplay="autoplay" loop="loop" width="100%">
+                <source src="./assets/videos_reduced/real_01.mp4" type="video/mp4">
+              </video>
+            </div>
+          </div>
+
+          <div class="item">
+            <div class="video">
+              <video muted autoplay="autoplay" loop="loop" width="100%">
+                <source src="./assets/videos_reduced/real_02.mp4" type="video/mp4">
+              </video>
+            </div>
+          </div>
+
+          <div class="item">
+            <div class="video">
+              <video muted autoplay="autoplay" loop="loop" width="100%">
+                <source src="./assets/videos_reduced/real_03.mp4" type="video/mp4">
+              </video>
+            </div>
+          </div>
+
+          <div class="item">
+            <div class="video">
+              <video muted autoplay="autoplay" loop="loop" width="100%">
+                <source src="./assets/videos_reduced/real_04.mp4" type="video/mp4">
+              </video>
+            </div>
+          </div>
+
+          <div class="item">
+            <div class="video">
+              <video muted autoplay="autoplay" loop="loop" width="100%">
+                <source src="./assets/videos_reduced/real_05.mp4" type="video/mp4">
+              </video>
+            </div>
+          </div>
+
+        </div>
+      </div>
+  </section>
+
+
+  <section class="teaser">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <!-- <div class="column is-four-fifths"> -->
+        <div class="column">
+          <div class="content has-text-justified">
+            <ol type="a">
+              <br>
+              <b>Top</b>: Results on complex simulated degradations. <br>
+              <b>Bottom</b>: Results on real-world videos.
+            </ol>
+          </div>
+          <div class="hr"></div>
+        </div>
       </div>
     </div>
+  </section>
 
-    <div class="publication-item">
-      <img src="images/clode_2025_.png" alt="CLODE" class="publication-image" />
-      <div class="publication-details">
-        <a href="https://openreview.net/pdf?id=5p57uCUH8k">CLODE: Continuous Exposure Learning for Low-Light Image Enhancement using Neural ODEs</a><br />
-        <em><b>ICLR, 2025 (spotlight)</b></em> | <a class="code-link" href="https://github.com/dgjung0220/CLODE">code</a><br />
-        Donggoo Jung*, <b>Daehyun Kim*</b>, Tae Hyun Kim<br />
-        We formulate low-light enhancement as a continuous system using Neural ODEs, allowing stable curve-based exposure correction without sensitivity to iteration count.
+  <section class="section">
+    <div class="container is-max-desktop">
+      <!-- Abstract. -->
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <!-- <div class="column"> -->
+          <h2 class="title is-3">Abstract</h2>
+          <div class="content has-text-justified">
+            <p>
+              Despite the promising progress of face image super-resolution, video face super-resolution remains
+              relatively under-explored.
+              Existing approaches either adapt general video super-resolution networks to face datasets or apply
+              established face image super-resolution models independently on individual video frames.
+              These paradigms encounter challenges either in reconstructing facial details or maintaining temporal
+              consistency.
+              To address these issues, we introduce a novel framework called Kalman-inspired Feature Propagation
+              (<b>KEEP</b>), designed to maintain a stable face prior over time.
+              The Kalman filtering principles offer our method a recurrent ability to use the information from
+              previously restored frames to guide and regulate the restoration process of the current frame.
+              Extensive experiments demonstrate the effectiveness of our method in capturing facial details consistently
+              across video frames.
+            </p>
+          </div>
+        </div>
+      </div>
+      <!--/ Abstract. -->
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <!-- <div class="column is-four-fifths"> -->
+        <div class="column">
+          <h2 class="title is-3">Method</h2>
+          <div class="content has-text-justified">
+            <p>
+              <b>(a) The state space model </b> defines the underlying dynamic system, where <i>f</i> describes how the
+              latent states transit over time,
+              <i>g</i> is a generative model, and <i>h</i> models the degradation from clean frame to degraded frame.
+              <b>(b) Block diagram of Kalman filter model.</b> In each time step, a predictive state from previous frame
+              (Blue dash box) and new observed
+              state of current frame (Red dash box) are fused by Kalman gain from Kalman Gain Network (KGN) to produce
+              more accurate estimates.
+              The combined state is then used to generate the estimated clean frame.
+            </p>
+            <div class="column">
+              <img src="./assets/images/KEEP_diagram.png" />
+            </div>
+          </div>
+          <div class="content has-text-justified">
+            <p>
+              The proposed KEEP consists of four modules: encoder, decoder, Kalman filter network, and Cross-Frame
+              Attention (CFA).
+              An encoder and decoder construct a VQGAN generative model.
+              Kalman filter network is designed to incorporate Kalman filtering principles and promote temporal
+              information propagation
+              and maintain stable latent code priors.
+              Particularly, the filter recursively fuses observed state of current frame and predictive state from
+              previous frame to form
+              a more accurate posterior estimate of the current state.
+              In addition, cross-frame attention (CFA) layers are adopted in the decoder to further promote local
+              temporal consistency to
+              regularize the information propagation.
+              The integral designs enable evidence accumulation and enhance temporal consistency for face video
+              super-resolution.
+            </p>
+            <div class="column">
+              <img src="./assets/images/KEEP_pipeline.png" />
+            </div>
+          </div>
+          <!-- Paper video. -->
+          <div class="column">
+            <h2 class="title is-3">Video</h2>
+            <div class="publication-video">
+              <iframe src="https://www.youtube.com/embed/vbIs1L8et_s?rel=0&amp;showinfo=0" frameborder="0"
+                allow="autoplay; encrypted-media" allowfullscreen></iframe>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
+  </section>
 
-    <div class="publication-item">
-      <img src="images/sanflow_2023.png" alt="SANFlow" class="publication-image" />
-      <div class="publication-details">
-        <a href="https://proceedings.neurips.cc/paper_files/paper/2023/hash/ee74a6ade401e200985e2421b20bbae4-Abstract-Conference.html">SANFlow: Semantic-Aware Normalizing Flow for Anomaly Detection</a><br />
-        <em><b>NeurIPS, 2023</b></em> | <a class="code-link" href="https://github.com/kdhRick2222/SANFlow">code</a><br />
-        <b>Daehyun Kim</b>, Sungyong Baik, Tae Hyun Kim<br />
-        SANFlow maps features to diverse distributions based on semantic location, improving discrimination between normal and abnormal patterns.
+
+  <section class="section" id="BibTeX">
+    <div class="container is-max-desktop content">
+      <h2 class="title">BibTeX</h2>
+      <pre><code>@InProceedings{feng2024keep,
+      title     = {Kalman-Inspired FEaturE Propagation for Video Face Super-Resolution},
+      author    = {Feng, Ruicheng and Li, Chongyi and Loy, Chen Change},
+      booktitle = {European Conference on Computer Vision (ECCV)},
+      year      = {2024}
+    }</code></pre>
+    </div>
+  </section>
+
+
+  <footer class="footer">
+    <div class="container">
+      <div class="content has-text-centered">
+        <a class="icon-link" href="https://jnjaby.github.io/projects/KEEP" target="_blank">
+          <i class="fas fa-file-pdf"></i>
+        </a>
+        <a class="icon-link" href="https://github.com/jnjaby/KEEP" target="_blank">
+          <i class="fab fa-github"></i>
+        </a>
+        <a class="icon-link" href="https://youtu.be/vbIs1L8et_s" target="_blank">
+          <i class="fab fa-youtube"></i>
+        </a>
       </div>
-    </div>
 
-    <div class="publication-item">
-      <div class="publication-details">
-        <a href="https://link.springer.com/article/10.1007/s00431-024-05505-7">Machine learning-based analysis for prediction of surgical necrotizing enterocolitis in very low birth weight infants using perinatal factors: a nationwide cohort study</a><br />
-        <em>European Journal of Pediatrics, 2024</em><br />
-        Seung Hyun Kim, Yoon Ju Oh, Joonhyuk Son, Donggoo Jung, <b>Daehyun Kim</b>, Soo Rack Ryu, Jae Yoon Na, Jae Kyoon Hwang, Tae Hyun Kim, Hyun-Kyung Park
+      <div class="columns is-centered">
+        <div class="column is-8">
+          <div class="content">
+            <div class="columns is-centered">
+              <p>
+                This website template is borrowed from <a href="https://github.com/nerfies/nerfies.github.io"
+                  target="_blank">Here</a>.
+                Feel free to clone this website's <a href="https://github.com/sczhou/ProPainter_website"
+                  target="_blank">source code</a>.
+                Thank you!
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
 
-    <div class="publication-item">
-      <div class="publication-details">
-        <a href="https://karger.com/neo/article/120/5/652/854411">Learning-Based Longitudinal Prediction Models for Mortality Risk in Very-Low-Birth-Weight Infants: A Nationwide Cohort Study</a><br />
-        <em>Neonatology, 2023</em><br />
-        Jae Yoon Na*, Donggoo Jung*, Jong Ho Cha, <b>Daehyun Kim</b>, Joonhyuk Son, Jae Kyoon Hwang, Tae Hyun Kim, Hyun-Kyung Park
-      </div>
-    </div>
+      <!--=================Visitor==========================-->
+      <!-- <div class="content has-text-centered" style="padding:0 0 0 0">
+      <img src='https://api.infinitescript.com/badgen/count?name=sczhou/ProPainter&ltext=Visitors&color=3977dd' alt='visitors'>
+    </div> -->
 
-    <div class="publication-item">
-      <div class="publication-details">
-        <a href="https://www.frontiersin.org/articles/10.3389/fped.2023.1155921/full">Two-stage learning-based prediction of bronchopulmonary dysplasia in very low birth weight infants: a nationwide cohort study</a><br />
-        <em>Frontiers in Pediatrics, 2023</em><br />
-        Jae Kyoon Hwang*, <b>Dae Hyun Kim*</b>, Jae Yoon Na*, Joonhyuk Son, Yoon Ju Oh, Donggoo Jung, Chang-Ryul Kim, Tae Hyun Kim, Hyun-Kyung Park
-      </div>
     </div>
+  </footer>
 
-    <div class="publication-item">
-      <div class="publication-details">
-        <a href="https://www.nature.com/articles/s41598-022-16273-5">Development of artificial neural networks for early prediction of intestinal perforation in preterm infants</a><br />
-        <em>Scientific Reports, 2022</em><br />
-        Joonhyuk Son*, <b>Daehyun Kim*</b>, Jae Yoon Na*, Donggoo Jung, Ja-Hye Ahn, Tae Hyun Kim, Hyun-Kyung Park
-      </div>
-    </div>
-    <p style="text-align: center;">* indicates equal contribution</p>
-
-    <div class="service">
-    <h2>Academic Service</h2>
-    <ul>
-      <li>Conference Reviewer: CVPR (2025, 2026), NeurIPS (2025), WACV (2026), AAAI (2026)</li>
-<!--       <li>Journal Reviewer: IEEE TMM, Machine Vision and Applications, IEEE Transactions on Pattern Analysis and Machine Intelligence</li> -->
-    </ul>
-    </div>
-  </div>
+  <!-- custom js file  -->
+  <!-- <script defer src="./assets/js/fontawesome.all.min.js"></script> -->
+  <script src="./assets/js/bulma-carousel.min.js"></script>
+  <script src="./assets/js/bulma-slider.min.js"></script>
+  <script src="./assets/js/index.js"></script>
+  <script src="./assets/js/jquery.event.move.js"></script>
+  <script src="./assets/js/jquery.twentytwenty.js"></script>
+  <script>
+    $(function () {
+      $(".twentytwenty-container").twentytwenty();
+      // $(".twentytwenty-container", "#results-carousel").twentytwenty({default_offset_pct: 0.5, ratio: 0.5});
+    });
+  </script>
 </body>
+
 </html>
