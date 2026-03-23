@@ -428,27 +428,15 @@
         <h2 class="title is-3">Abstract</h2>
         <div class="content has-text-justified">
           <p>
-            Flow-based propagation and spatiotemporal Transformer
-            are two mainstream mechanisms in video inpainting (VI).
-            Despite the effectiveness of these components, they still suffer
-            from some limitations that affect their performance. Previous
-            propagation-based approaches are performed separately either in 
-            the image or feature domain. Global image propagation isolated 
-            from learning may cause spatial misalignment
-            due to inaccurate optical flow. Moreover, memory or computational 
-            constraints limit the temporal range of feature propagation and 
-            video Transformer, preventing exploration of
-            correspondence information from distant frames. To address
-            these issues, we propose an improved framework, called
-            <b>ProPainter</b>, which involves enhanced <b>ProPa</b>gat<b>i</b>o<b>n</b> 
-            and an efficient <b>T</b>ransform<b>er</b>. Specifically, we introduce 
-            dual-domain propagation that combines the advantages of image and 
-            feature warping, exploiting global correspondences reliably.
-            We also propose a mask-guided sparse video Transformer,
-            which achieves high efficiency by discarding unnecessary and redundant 
-            tokens. With these components, ProPainter
-            outperforms prior arts by a large margin of 1.46 dB in PSNR
-            while maintaining appealing efficiency.
+            Under-display cameras (UDCs) allow for full-screen designs by positioning the imaging sensor underneath the display. 
+            Nonetheless, light diffraction and scattering through the various display layers result in spatially varying and complex degradations, which significantly reduce high-frequency details. 
+            Current PSF-based physical modeling techniques and frequency-separation networks are effective at reconstructing low-frequency structures and maintaining overall color consistency. 
+            However, they still face challenges in recovering fine details when dealing with complex, spatially varying degradation. 
+            To solve this problem, we propose a lightweight \textbf{U}ncertainty-aware \textbf{C}ontext-\textbf{M}emory \textbf{Network} (\textbf{UCMNet}), for UDC image restoration. 
+            Unlike previous methods that apply uniform restoration, UCMNet performs uncertainty-aware adaptive processing to restore high-frequency details in regions with varying degradations. 
+            The estimated uncertainty maps, learned through an uncertainty-driven loss, quantify spatial uncertainty induced by diffraction and scattering, and guide the Memory Bank to retrieve region-adaptive context from the Context Bank. 
+            This process enables effective modeling of the non-uniform degradation characteristics inherent to UDC imaging. 
+            Leveraging this uncertainty as a prior, UCMNet achieves state-of-the-art performance on multiple benchmarks with 30\% fewer parameters than previous models. 
           </p>
         </div>
       </div>
@@ -495,11 +483,11 @@
 <section class="section" id="BibTeX">
   <div class="container is-max-desktop content">
     <h2 class="title">BibTeX</h2>
-    <pre><code>@InProceedings{zhou2023propainter,
-      title     = {{ProPainter}: Improving Propagation and Transformer for Video Inpainting},
-      author    = {Zhou, Shangchen and Li, Chongyi and Chan, Kelvin C.K and Loy, Chen Change},
-      booktitle = {Proceedings of IEEE International Conference on Computer Vision (ICCV)},
-      year      = {2023}
+    <pre><code>@InProceedings{kim2025UCMNet,
+      title     = {{UCMNet}: Uncertainty-Aware Context Memory Network for Under-Display Camera Image Restoration},
+      author    = {Kim, Daehyun and Kim, Youngmin and Oh, Yoon Ju and Kim, Tae Hyun},
+      booktitle = {Computer Vision and Pattern Recognition (CVPR)},
+      year      = {2026}
     }</code></pre>
   </div>
 </section>
