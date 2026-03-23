@@ -1,91 +1,28 @@
 <!DOCTYPE html>
 <html>
-
 <head>
   <meta charset="utf-8">
-  <meta name="description"
-    content="UCMNet: Uncertainty-Aware Context Memory Network for Under-Display Camera Image Restoration">
-  <meta name="keywords"
-    content="UCMNet, Under-Display Camera, UDC, Image Restoration, Uncertainty-Aware, Context Memory Network">
+  <meta name="description" content="UCMNet for Under-Display Camera Image Restoration">
+  <meta name="keywords" content="Under-Display Camera, Image Restoration, Artifact Removal, Uncertainty-Driven Network, Memory Bank, Uncertainty Loss">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>UCMNet: Uncertainty-Aware Context Memory Network for Under-Display Camera Image Restoration</title>
+  <title>UCMNet for Under-Display Camera Image Restoration</title>
 
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<!--   <script async src="https://www.googletagmanager.com/gtag/js?id=G-PYVRSFMDRL"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'G-PYVRSFMDRL');
+
+  </script> -->
   <style>
-    .hr {
-      width: 100%;
-      height: 1px;
-      margin: 48px 0;
-      background-color: #d6dbdf;
-    }
-
-    .logo-wrap {
-      margin-bottom: 12px;
-    }
-
-    .logo-wrap img {
-      width: 90px;
-      height: auto;
-      display: inline-block;
-    }
-
-    .twentytwenty-container img {
-      width: 100%;
-      display: block;
-    }
-
-    .result-single img,
-    .method-image img {
-      width: 100%;
-      display: block;
-    }
-
-    .results-carousel .item {
-      padding: 0 6px;
-    }
-
-    .desc {
-      text-align: center;
-      font-weight: 600;
-      margin-bottom: 10px;
-      font-size: 1rem;
-    }
-
-    .dataset-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 20px;
-      margin-top: 16px;
-    }
-
-    .dataset-grid img {
-      width: 100%;
-      display: block;
-      border-radius: 8px;
-    }
-
-    .dataset-caption {
-      text-align: center;
-      margin-top: 8px;
-      font-weight: 600;
-    }
-
-    .publication-links .button {
-      margin: 0.15rem;
-    }
-
-    .method-image {
-      margin-top: 12px;
-    }
-
-    @media screen and (max-width: 768px) {
-      .dataset-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .logo-wrap img {
-        width: 70px;
-      }
-    }
+  .hr {width: 100%; height: 1px; margin: 48px 0; background-color: #d6dbdf;}
   </style>
 
   <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
@@ -96,400 +33,643 @@
   <link rel="stylesheet" href="./assets/css/index.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
 
+  <!-- custom css file  -->
   <link rel="stylesheet" href="./assets/css/style.css">
   <link rel="stylesheet" href="./assets/css/twentytwenty.css">
-
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
-
 <body>
 
-  <section class="hero">
-    <div class="hero-body">
-      <div class="container is-max-desktop head">
-        <div class="columns is-centered">
-          <div class="column has-text-centered head">
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop head">
+      <div class="columns is-centered">
+        <div class="column has-text-centered head">
+          <div class="logo">
+          <a href="index.html">
+            <img src="./assets/images/logo_UCMNet.png" style="width: 80px; height: auto;" alt="Logo">
+          </a>
+          </div>
+          <br>
 
-            <div class="logo-wrap">
-              <img src="./assets/images/logo_UCMNet.png" alt="Logo">
-            </div>
+          <h1 class="title is-3 publication-title"> 
+            <font color="#fb5a42">UCMNet</font>:
+            <font color="#fb5a42">U</font>ncertainty-Aware <font color="#fb5a42">C</font>ontext <font color="#fb5a42">M</font>emory 
+            <font color="#fb5a42">N</font>etwork <br>
+            for Under-Display Camera Image Restoration
+          </h1>
 
-            <h1 class="title is-3 publication-title">
-              <font color="#fb5a42">UCMNet</font>:<br>
-              <font color="#fb5a42">U</font>ncertainty-Aware
-              <font color="#fb5a42">C</font>ontext
-              <font color="#fb5a42">M</font>emory
-              <font color="#fb5a42">N</font>etwork<br>
-              for Under-Display Camera Image Restoration
-            </h1>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">
+              <a href="https://kdhrick2222.github.io/">Daehyun Kim<sup>1</sup></a>,&nbsp;&nbsp;</span>
+            <span class="author-block">
+              <a href="https://sites.google.com/view/lliger9/home?authuser=0">Youngmin Kim<sup>1,2</sup></a>,&nbsp;&nbsp;</span>
+            <span class="author-block">
+              <a href="https://sites.google.com/view/lliger9/home?authuser=0">Yoon Ju Oh<sup>1</sup></a>,&nbsp;&nbsp;</span> 
+            <span class="author-block">
+              <a href="https://scholar.google.com/citations?hl=ko&user=8soccsoAAAAJ">Tae Hyun Kim<sup>1†</sup></a></span>
+            <span class="author-block">
+          </div>
 
-            <div class="is-size-5 publication-authors">
-              <span class="author-block">
-                <a href="https://kdhrick2222.github.io/" target="_blank">Daehyun Kim</a><sup>1</sup>,&nbsp;&nbsp;
+          <div class="is-size-5 publication-authors">
+            <span class="author-block"><sup>1</sup> VILAB, Hanyang University, <sup>2</sup> Agency for Defense Development (ADD) </span>
+          </div>
+
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">CVPR 2026</span>
+          </div>
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <span class="link-block">
+                <a href="put arxiv link in here..." target="_blank"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="ai ai-arxiv"></i>
+                  </span>
+                  <span>arXiv</span>
+                </a>
               </span>
-              <span class="author-block">
-                <a href="https://sites.google.com/view/lliger9/home?authuser=0" target="_blank">Youngmin Kim</a><sup>1,2</sup>,&nbsp;&nbsp;
-              </span>
-              <span class="author-block">
-                <a href="https://sites.google.com/view/lliger9/home?authuser=0" target="_blank">Yoon Ju Oh</a><sup>1</sup>,&nbsp;&nbsp;
-              </span>
-              <span class="author-block">
-                <a href="https://scholar.google.com/citations?hl=ko&user=8soccsoAAAAJ" target="_blank">Tae Hyun Kim</a><sup>1†</sup>
-              </span>
-            </div>
 
-            <div class="is-size-5 publication-authors">
-              <span class="author-block">
-                <sup>1</sup>Hanyang University &nbsp;&nbsp;
-                <sup>2</sup>Agency for Defense Development (ADD)
-              </span>
-            </div>
-
-            <div class="is-size-6 publication-authors">
-              <span class="author-block"><sup>†</sup> Co-corresponding author</span>
-            </div>
-
-            <div class="is-size-5 publication-authors">
-              <span class="author-block">CVPR 2026</span>
-            </div>
-
-            <div class="column has-text-centered">
-              <div class="publication-links">
-                <span class="link-block">
-                  <a href="#" target="_blank" class="external-link button is-normal is-rounded is-dark">
-                    <span class="icon">
-                      <i class="fas fa-file-pdf"></i>
-                    </span>
-                    <span>Paper</span>
-                  </a>
-                </span>
-
-                <span class="link-block">
-                  <a href="https://github.com/kdhRick2222/UCMNet/" target="_blank"
-                    class="external-link button is-normal is-rounded is-dark">
-                    <span class="icon">
+              <!-- Code Link. -->
+              <span class="link-block"> 
+                <a href="https://github.com/kdhRick2222/UCMNet" target="_blank"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
                       <i class="fab fa-github"></i>
-                    </span>
-                    <span>Code</span>
+                  </span>
+                  <span>Code</span>
                   </a>
-                </span>
-              </div>
+              </span>
+
+              <!-- Demo Link. -->
+              <span class="link-block">
+                <a href="put demo link here..." target="_blank"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                    <img src="./assets/images/hf.png">
+                  </span>
+                  <span>Demo</span>
+                </a>
+              </span>
             </div>
 
           </div>
         </div>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- first row -->
-  <section class="hero is-light is-small">
-    <div class="hero-body">
-      <div class="container">
-        <div id="results-carousel" class="carousel results-carousel">
 
-          <div class="item">
+<section class="hero is-light is-small">
+  <div class="hero-body">
+    <div class="container">
+      <div id="results-carousel" class="carousel results-carousel">
+
+        
+        <div class="item">
+          <div class="twentytwenty-container" data-orientation="horizontal" data-default_offset_pct="0.5">
+            <img src="./assets/examples/TOLED_IR/input_0.png" alt="TOLED input 01">
+            <img src="./assets/examples/TOLED_IR/prediction_0.png" alt="TOLED output 01">
+          </div>
+          <div class="desc">TOLED</div>
+        </div>
+        
+        <!-- <div class="item">
+          <div class="twentytwenty-container" data-orientation="horizontal" ratio="0.5556">
             <div class="desc">TOLED</div>
-            <div class="twentytwenty-container" data-orientation="horizontal" data-default_offset_pct="0.5">
+            <div class="image">
               <img src="./assets/examples/TOLED_IR/input_0.png" alt="TOLED input 01">
+            </div>
+            <div class="image">
               <img src="./assets/examples/TOLED_IR/prediction_0.png" alt="TOLED output 01">
             </div>
           </div>
+        </div>
+        </div> -->
 
-          <div class="item">
+        <div class="item">
+          <div class="twentytwenty-container" data-orientation="horizontal" ratio="0.5556">
             <div class="desc">TOLED</div>
-            <div class="twentytwenty-container" data-orientation="horizontal" data-default_offset_pct="0.5">
+            <div class="image">
               <img src="./assets/examples/TOLED_IR/input_1.png" alt="TOLED input 02">
+            </div>
+            <div class="image">
               <img src="./assets/examples/TOLED_IR/prediction_1.png" alt="TOLED output 02">
             </div>
           </div>
+        </div>
 
-          <div class="item">
+        <div class="item">
+          <div class="twentytwenty-container" data-orientation="horizontal" ratio="0.5556">
             <div class="desc">TOLED</div>
-            <div class="twentytwenty-container" data-orientation="horizontal" data-default_offset_pct="0.5">
+            <div class="image">
               <img src="./assets/examples/TOLED_IR/input_2.png" alt="TOLED input 03">
+            </div>
+            <div class="image">
               <img src="./assets/examples/TOLED_IR/prediction_2.png" alt="TOLED output 03">
             </div>
           </div>
+        </div>
 
-          <div class="item">
+        <div class="item">
+          <div class="twentytwenty-container" data-orientation="horizontal" ratio="0.5556">
             <div class="desc">POLED</div>
-            <div class="twentytwenty-container" data-orientation="horizontal" data-default_offset_pct="0.5">
+            <div class="image">
               <img src="./assets/examples/POLED_IR/input_16.png" alt="POLED input 01">
+            </div>
+            <div class="image">
               <img src="./assets/examples/POLED_IR/prediction_16.png" alt="POLED output 01">
             </div>
           </div>
+        </div>
 
-          <div class="item">
+        <div class="item">
+          <div class="twentytwenty-container" data-orientation="horizontal" ratio="0.5556">
             <div class="desc">POLED</div>
-            <div class="twentytwenty-container" data-orientation="horizontal" data-default_offset_pct="0.5">
+            <div class="image">
               <img src="./assets/examples/POLED_IR/input_17.png" alt="POLED input 02">
+            </div>
+            <div class="image">
               <img src="./assets/examples/POLED_IR/prediction_17.png" alt="POLED output 02">
             </div>
           </div>
+        </div>
 
-          <div class="item">
+        <div class="item">
+          <div class="twentytwenty-container" data-orientation="horizontal" ratio="0.5556">
             <div class="desc">POLED</div>
-            <div class="twentytwenty-container" data-orientation="horizontal" data-default_offset_pct="0.5">
+            <div class="image">
               <img src="./assets/examples/POLED_IR/input_18.png" alt="POLED input 03">
+            </div>
+            <div class="image">
               <img src="./assets/examples/POLED_IR/prediction_18.png" alt="POLED output 03">
             </div>
           </div>
+        </div>
 
-          <div class="item">
+        <div class="item">
+          <div class="twentytwenty-container" data-orientation="horizontal" ratio="0.5556">
             <div class="desc">SYNTH</div>
-            <div class="twentytwenty-container" data-orientation="horizontal" data-default_offset_pct="0.5">
+            <div class="image">
               <img src="./assets/examples/SYNTH_IR/input_colorful_studio_8k_fov90_theta0_phi0_l.png" alt="SYNTH input 01">
+            </div>
+            <div class="image">
               <img src="./assets/examples/SYNTH_IR/prediction_colorful_studio_8k_fov90_theta0_phi0_l.png" alt="SYNTH output 01">
             </div>
           </div>
+        </div>
 
-          <div class="item">
+        <div class="item">
+          <div class="twentytwenty-container" data-orientation="horizontal" ratio="0.5556" data-default_offset_pct="0.35">
             <div class="desc">SYNTH</div>
-            <div class="twentytwenty-container" data-orientation="horizontal" data-default_offset_pct="0.35">
+            <div class="image">
               <img src="./assets/examples/SYNTH_IR/input_floral_tent_8k_fov90_theta120_phi0_l.png" alt="SYNTH input 02">
+            </div>
+            <div class="image">
               <img src="./assets/examples/SYNTH_IR/prediction_floral_tent_8k_fov90_theta120_phi0_l.png" alt="SYNTH output 02">
             </div>
           </div>
+        </div>
 
-          <div class="item">
+        <div class="item">
+          <div class="twentytwenty-container" data-orientation="horizontal" ratio="0.5556" data-default_offset_pct="0.35">
             <div class="desc">SYNTH</div>
-            <div class="twentytwenty-container" data-orientation="horizontal" data-default_offset_pct="0.35">
+            <div class="image">
               <img src="./assets/examples/SYNTH_IR/input_kloppenheim_02_8k_fov90_theta240_phi0_c.png" alt="SYNTH input 03">
+            </div>
+            <div class="image">
               <img src="./assets/examples/SYNTH_IR/prediction_kloppenheim_02_8k_fov90_theta240_phi0_c.png" alt="SYNTH output 03">
             </div>
           </div>
-
         </div>
+
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- second row -->
-  <section class="hero is-light is-small">
-    <div class="hero-body">
-      <div class="container">
-        <div id="results-carousel-2" class="carousel results-carousel">
+<!-- first row -->
+<section class="hero is-light is-small">
+  <div class="hero-body">
+    <div class="container">
+      <div id="results-carousel" class="carousel results-carousel">
 
-          <div class="item">
-            <div class="desc">TOLED</div>
-            <div class="result-single">
-              <img src="./assets/images/toled_result.png" alt="TOLED results">
+        <div class="item">
+          <div class="twentytwenty-container" data-orientation="horizontal" ratio="0.5556">
+            <div class="desc">Object Removal</div>
+            <div class="video">
+              <video muted autoplay="autoplay" loop="loop" width="100%">
+                <source src="./assets/videos_reduced/object_removal_02_mask.mp4" type="video/mp4">
+              </video> 
+            </div>
+            <div class="video">
+              <video muted autoplay="autoplay" loop="loop" width="100%">
+                <source src="./assets/videos_reduced/object_removal_02_out.mp4" type="video/mp4">
+              </video> 
             </div>
           </div>
-
-          <div class="item">
-            <div class="desc">POLED</div>
-            <div class="result-single">
-              <img src="./assets/images/poled_result.png" alt="POLED results">
-            </div>
-          </div>
-
-          <div class="item">
-            <div class="desc">SYNTH</div>
-            <div class="result-single">
-              <img src="./assets/images/synth_result.png" alt="SYNTH results">
-            </div>
-          </div>
-
-          <div class="item">
-            <div class="desc">Overview</div>
-            <div class="result-single">
-              <img src="./assets/images/teaser.png" alt="UCMNet teaser">
-            </div>
-          </div>
-
         </div>
-      </div>
-    </div>
-  </section>
 
-  <section class="teaser">
-    <div class="container is-max-desktop">
+        <div class="item">
+          <div class="twentytwenty-container" data-orientation="horizontal" ratio="0.5556">
+            <div class="desc">Object Removal</div>
+            <div class="video">
+              <video muted autoplay="autoplay" loop="loop" width="100%">
+                <source src="./assets/videos_reduced/object_removal_01_mask.mp4" type="video/mp4">
+              </video> 
+            </div>
+            <div class="video">
+              <video muted autoplay="autoplay" loop="loop" width="100%">
+                <source src="./assets/videos_reduced/object_removal_01_out.mp4" type="video/mp4">
+              </video>
+            </div>
+          </div>
+        </div>
+
+        <div class="item">
+          <div class="twentytwenty-container" data-orientation="horizontal" ratio="0.5556">
+            <div class="desc">Object Removal</div>
+            <div class="video">
+              <video muted autoplay="autoplay" loop="loop" width="100%">
+                <source src="./assets/videos_reduced/object_removal_04_mask.mp4" type="video/mp4">
+              </video> 
+            </div>
+            <div class="video">
+              <video muted autoplay="autoplay" loop="loop" width="100%">
+                <source src="./assets/videos_reduced/object_removal_04_out.mp4" type="video/mp4">
+              </video>
+            </div>
+          </div>
+        </div>
+
+        <div class="item">
+          <div class="twentytwenty-container" data-orientation="horizontal" ratio="0.5556">
+            <div class="desc">Object Removal</div>
+            <div class="video">
+              <video muted autoplay="autoplay" loop="loop" width="100%">
+                <source src="./assets/videos_reduced/object_removal_03_mask.mp4" type="video/mp4">
+              </video> 
+            </div>
+            <div class="video">
+              <video muted autoplay="autoplay" loop="loop" width="100%">
+                <source src="./assets/videos_reduced/object_removal_03_out.mp4" type="video/mp4">
+              </video> 
+            </div>
+          </div>
+        </div>
+
+        <div class="item">
+          <div class="twentytwenty-container" data-orientation="horizontal" ratio="0.5556">
+            <div class="desc">Object Removal</div>
+            <div class="video">
+              <video muted autoplay="autoplay" loop="loop" width="100%">
+                <source src="./assets/videos_reduced/object_removal_05_mask.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="video">
+              <video muted autoplay="autoplay" loop="loop" width="100%">
+                <source src="./assets/videos_reduced/object_removal_05_out.mp4" type="video/mp4">
+              </video> 
+            </div>
+          </div>
+        </div>
+
+        <div class="item">
+          <div class="twentytwenty-container" data-orientation="horizontal" ratio="0.5556" default_offset_pct="0.35">
+            <div class="desc">Object Removal</div>
+            <div class="video">
+              <video muted autoplay="autoplay" loop="loop" width="100%">
+                <source src="./assets/videos_reduced/object_removal_06_mask.mp4" type="video/mp4">
+              </video> 
+            </div>
+            <div class="video">
+              <video muted autoplay="autoplay" loop="loop" width="100%">
+                <source src="./assets/videos_reduced/object_removal_06_out.mp4" type="video/mp4">
+              </video> 
+            </div>
+          </div>
+        </div>
+
+        <div class="item">
+          <div class="twentytwenty-container" data-orientation="horizontal" ratio="0.5556">
+            <div class="desc">Object Removal</div>
+            <div class="video">
+              <video muted autoplay="autoplay" loop="loop" width="100%">
+                <source src="./assets/videos_reduced/object_removal_09_mask.mp4" type="video/mp4">
+              </video> 
+            </div>
+            <div class="video">
+              <video muted autoplay="autoplay" loop="loop" width="100%">
+                <source src="./assets/videos_reduced/object_removal_09_out.mp4" type="video/mp4">
+              </video> 
+            </div>
+          </div>
+        </div>
+
+        <div class="item">
+          <div class="twentytwenty-container" data-orientation="horizontal" ratio="0.5556">
+            <div class="desc">Video Outpainting</div>
+            <div class="video">
+              <video muted autoplay="autoplay" loop="loop" width="100%">
+                <source src="./assets/videos_reduced/video_outpainting_01_mask.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="video">
+              <video muted autoplay="autoplay" loop="loop" width="100%">
+                <source src="./assets/videos_reduced/video_outpainting_01_out.mp4" type="video/mp4">
+              </video>
+            </div>
+          </div>
+        </div>
+
+      </div>
+  </div>
+</section>
+
+<!-- second row -->
+<section class="hero is-light is-small">
+  <div class="hero-body second-body">
+    <div class="container">
+      <div id="results-carousel" class="carousel results-carousel">
+
+        <div class="item">
+          <div class="twentytwenty-container" data-orientation="horizontal" ratio="0.5556">
+            <div class="desc">Video Completion</div>
+            <div class="video">
+              <video muted autoplay="autoplay" loop="loop" width="100%">
+                <source src="./assets/videos_reduced/video_completion_04_mask.mp4" type="video/mp4">
+              </video> 
+            </div>
+            <div class="video">
+              <video muted autoplay="autoplay" loop="loop" width="100%">
+                <source src="./assets/videos_reduced/video_completion_04_out.mp4" type="video/mp4">
+              </video> 
+            </div>
+          </div>
+        </div>
+
+        <div class="item">
+          <div class="twentytwenty-container" data-orientation="horizontal" ratio="0.5556">
+            <div class="desc">Video Completion</div>
+            <div class="video">
+              <video muted autoplay="autoplay" loop="loop" width="100%">
+                <source src="./assets/videos_reduced/video_completion_01_mask.mp4" type="video/mp4">
+              </video> 
+            </div>
+            <div class="video">
+              <video muted autoplay="autoplay" loop="loop" width="100%">
+                <source src="./assets/videos_reduced/video_completion_01_out.mp4" type="video/mp4">
+              </video>
+            </div>
+          </div>
+        </div>
+
+        <div class="item">
+          <div class="twentytwenty-container" data-orientation="horizontal" ratio="0.5556">
+            <div class="desc">Video Completion</div>
+            <div class="video">
+              <video muted autoplay="autoplay" loop="loop" width="100%">
+                <source src="./assets/videos_reduced/video_completion_06_mask.mp4" type="video/mp4">
+              </video> 
+            </div>
+            <div class="video">
+              <video muted autoplay="autoplay" loop="loop" width="100%">
+                <source src="./assets/videos_reduced/video_completion_06_out.mp4" type="video/mp4">
+              </video> 
+            </div>
+          </div>
+        </div>
+
+        <div class="item">
+          <div class="twentytwenty-container" data-orientation="horizontal" ratio="0.5556">
+            <div class="desc">Video Completion</div>
+            <div class="video">
+              <video muted autoplay="autoplay" loop="loop" width="100%">
+                <source src="./assets/videos_reduced/video_completion_08_mask.mp4" type="video/mp4">
+              </video> 
+            </div>
+            <div class="video">
+              <video muted autoplay="autoplay" loop="loop" width="100%">
+                <source src="./assets/videos_reduced/video_completion_08_out.mp4" type="video/mp4">
+              </video> 
+            </div>
+          </div>
+        </div>
+
+        <div class="item">
+          <div class="twentytwenty-container" data-orientation="horizontal" ratio="0.5556">
+            <div class="desc">Video Completion</div>
+            <div class="video">
+              <video muted autoplay="autoplay" loop="loop" width="100%">
+                <source src="./assets/videos_reduced/video_completion_03_mask.mp4" type="video/mp4">
+              </video> 
+            </div>
+            <div class="video">
+              <video muted autoplay="autoplay" loop="loop" width="100%">
+                <source src="./assets/videos_reduced/video_completion_03_out.mp4" type="video/mp4">
+              </video> 
+            </div>
+          </div>
+        </div>
+
+        <div class="item">
+          <div class="twentytwenty-container" data-orientation="horizontal" ratio="0.5556">
+            <div class="desc">Video Completion</div>
+            <div class="video">
+              <video muted autoplay="autoplay" loop="loop" width="100%">
+                <source src="./assets/videos_reduced/video_completion_02_mask.mp4" type="video/mp4">
+              </video> 
+            </div>
+            <div class="video">
+              <video muted autoplay="autoplay" loop="loop" width="100%">
+                <source src="./assets/videos_reduced/video_completion_02_out.mp4" type="video/mp4">
+              </video>
+            </div>
+          </div>
+        </div>
+
+        <div class="item">
+          <div class="twentytwenty-container" data-orientation="horizontal" ratio="0.5556">
+            <div class="desc">Video Completion</div>
+            <div class="video">
+              <video muted autoplay="autoplay" loop="loop" width="100%">
+                <source src="./assets/videos_reduced/video_completion_05_mask.mp4" type="video/mp4">
+              </video> 
+            </div>
+            <div class="video">
+              <video muted autoplay="autoplay" loop="loop" width="100%">
+                <source src="./assets/videos_reduced/video_completion_05_out.mp4" type="video/mp4">
+              </video> 
+            </div>
+          </div>
+        </div>
+
+        <div class="item">
+          <div class="twentytwenty-container" data-orientation="horizontal" ratio="0.5556">
+            <div class="desc">Video Completion</div>
+            <div class="video">
+              <video muted autoplay="autoplay" loop="loop" width="100%">
+                <source src="./assets/videos_reduced/video_completion_07_mask.mp4" type="video/mp4">
+              </video> 
+            </div>
+            <div class="video">
+              <video muted autoplay="autoplay" loop="loop" width="100%">
+                <source src="./assets/videos_reduced/video_completion_07_out.mp4" type="video/mp4">
+              </video> 
+            </div>
+          </div>
+        </div>
+
+      </div>
+  </div>
+</section>
+
+
+<section class="teaser">
+  <div class="container is-max-desktop">
       <div class="columns is-centered has-text-centered">
+        <!-- <div class="column is-four-fifths"> -->
         <div class="column">
           <div class="content has-text-justified">
             <ol type="a">
               <br>
-              <b>Top</b>: Interactive comparisons between the degraded input and the restored result on TOLED, POLED, and SYNTH. <br>
-              <b>Bottom</b>: Additional qualitative results across different UDC benchmarks.
+              <li> <b>Object Removal</b>: remove the object(s) from a video. </li>
+              <!-- <li> <b>Watermark Removal</b>: remove the watermark from a video. </li> -->
+              <li> <b>Video Completion</b>: complete the masked video. </li>
+              <li> <b>Video Outpainting</b>: expand the view of a video. </li>
             </ol>
           </div>
           <div class="hr"></div>
         </div>
       </div>
-    </div>
-  </section>
+  </div>
+</section>
 
-  <section class="section">
-    <div class="container is-max-desktop">
-      <div class="columns is-centered has-text-centered">
-        <div class="column is-four-fifths">
-          <h2 class="title is-3">Abstract</h2>
-          <div class="content has-text-justified">
-            <p>
-              Under-display cameras (UDCs) allow for full-screen designs by positioning the imaging sensor underneath the display.
-              Nonetheless, light diffraction and scattering through the various display layers result in spatially varying and complex degradations, which significantly reduce high-frequency details.
-              Current PSF-based physical modeling techniques and frequency-separation networks are effective at reconstructing low-frequency structures and maintaining overall color consistency.
-              However, they still face challenges in recovering fine details when dealing with complex, spatially varying degradation.
-            </p>
-            <p>
-              To solve this problem, we propose a lightweight <b>U</b>ncertainty-aware <b>C</b>ontext <b>M</b>emory <b>N</b>etwork (<b>UCMNet</b>), for UDC image restoration.
-              Unlike previous methods that apply uniform restoration, UCMNet performs uncertainty-aware adaptive processing to restore high-frequency details in regions with varying degradations.
-              The estimated uncertainty maps, learned through an uncertainty-driven loss, quantify spatial uncertainty induced by diffraction and scattering, and guide the Memory Bank to retrieve region-adaptive context from the Context Bank.
-              This process enables effective modeling of the non-uniform degradation characteristics inherent to UDC imaging.
-              Leveraging this uncertainty as a prior, UCMNet achieves state-of-the-art performance on multiple benchmarks with 30% fewer parameters than previous models.
-            </p>
-          </div>
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Abstract. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+      <!-- <div class="column"> -->
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            Under-display cameras (UDCs) allow for full-screen designs by positioning the imaging sensor underneath the display. 
+            Nonetheless, light diffraction and scattering through the various display layers result in spatially varying and complex degradations, which significantly reduce high-frequency details. 
+            Current PSF-based physical modeling techniques and frequency-separation networks are effective at reconstructing low-frequency structures and maintaining overall color consistency. 
+            However, they still face challenges in recovering fine details when dealing with complex, spatially varying degradation. 
+            To solve this problem, we propose a lightweight Uncertainty-aware Context-Memory Network (UCMNet), for UDC image restoration. 
+            Unlike previous methods that apply uniform restoration, UCMNet performs uncertainty-aware adaptive processing to restore high-frequency details in regions with varying degradations. 
+            The estimated uncertainty maps, learned through an uncertainty-driven loss, quantify spatial uncertainty induced by diffraction and scattering, and guide the Memory Bank to retrieve region-adaptive context from the Context Bank. 
+            This process enables effective modeling of the non-uniform degradation characteristics inherent to UDC imaging. 
+            Leveraging this uncertainty as a prior, UCMNet achieves state-of-the-art performance on multiple benchmarks with 30\% fewer parameters than previous models. 
+          </p>
         </div>
       </div>
     </div>
-  </section>
+    <!--/ Abstract. -->
+  </div>
+</section>
 
-  <section class="section">
-    <div class="container is-max-desktop">
-      <div class="columns is-centered has-text-centered">
-        <div class="column">
-          <h2 class="title is-3">Method</h2>
-          <div class="content has-text-justified">
-            <p>
-              UCMNet estimates spatial uncertainty induced by diffraction and scattering in under-display camera imaging.
-              Based on the estimated uncertainty, the network adaptively retrieves region-aware contextual information from a memory mechanism, enabling effective restoration of high-frequency details under non-uniform degradation.
-            </p>
-            <div class="method-image">
-              <img src="./assets/images/method_1.png" alt="UCMNet method overview 1">
-            </div>
-          </div>
-
-          <div class="content has-text-justified">
-            <p>
-              The proposed uncertainty-aware context memory design allows UCMNet to perform adaptive restoration rather than uniform enhancement, which improves detail recovery while preserving global color and structural consistency.
-            </p>
-            <div class="method-image">
-              <img src="./assets/images/method_2.png" alt="UCMNet method overview 2">
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="section">
-    <div class="container is-max-desktop">
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <!-- <div class="column is-four-fifths"> -->
       <div class="column">
-        <h2 class="title is-3">Results on TOLED, POLED, and SYNTH</h2>
-        <div class="dataset-grid">
-          <div>
-            <img src="./assets/images/toled_result.png" alt="TOLED results">
-            <div class="dataset-caption">TOLED</div>
-          </div>
-          <div>
-            <img src="./assets/images/poled_result.png" alt="POLED results">
-            <div class="dataset-caption">POLED</div>
-          </div>
-          <div>
-            <img src="./assets/images/synth_result.png" alt="SYNTH results">
-            <div class="dataset-caption">SYNTH</div>
+        <h2 class="title is-3">Method</h2>
+        <div class="content has-text-justified">
+          <p>
+            ProPainter comprises three key components: recurrent flow completion, dual-domain propagation, and mask-guided
+            sparse Transformer. First, we employ a highly efficient recurrent flow completion network to complete the corrupted flow
+            fields. We then perform propagation in both image and feature domains, which are jointly trained. This approach enables us to
+            explore correspondences from both global and local temporal frames, resulting in more reliable and effective propagation. The
+            subsequent mask-guided sparse Transformer blocks refine the propagated features using spatiotemporal attention, aided by a
+            sparse strategy that considers only a subset of the tokens. This enhances efficiency and reduces memory consumption, while
+            maintaining performance.
+          </p>
+          <div class="column">
+            <img src="./assets/images/ProPainter_pipeline.png" />
           </div>
         </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="section" id="BibTeX">
-    <div class="container is-max-desktop content">
-      <h2 class="title">BibTeX</h2>
-      <pre><code>@inproceedings{kim2026ucmnet,
-  title     = {UCMNet: Uncertainty-Aware Context Memory Network for Under-Display Camera Image Restoration},
-  author    = {Kim, Daehyun and Kim, Youngmin and Oh, Yoon Ju and Kim, Tae Hyun},
-  booktitle = {Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},
-  year      = {2026}
-}</code></pre>
-    </div>
-  </section>
-
-  <footer class="footer">
-    <div class="container">
-      <div class="content has-text-centered">
-        <a class="icon-link" href="#" target="_blank">
-          <i class="fas fa-file-pdf"></i>
-        </a>
-        <a class="icon-link" href="https://github.com/kdhRick2222/UCMNet/" target="_blank">
-          <i class="fab fa-github"></i>
-        </a>
-      </div>
-
-      <div class="columns is-centered">
-        <div class="column is-8">
-          <div class="content">
-            <div class="columns is-centered">
-              <p>
-                This website template is borrowed from <a href="https://github.com/nerfies/nerfies.github.io"
-                  target="_blank">Here</a>.
-                Feel free to clone this website's source code.
-              </p>
+        <!-- Paper video. -->
+          <div class="column">
+            <h2 class="title is-3">Video</h2>
+            <div class="publication-video">
+              <iframe src="https://www.youtube.com/embed/92EHfgCO5-Q?rel=0&amp;showinfo=0"
+                      frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
             </div>
           </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="section" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <h2 class="title">BibTeX</h2>
+    <pre><code>@InProceedings{kim2025UCMNet,
+      title     = {{UCMNet}: Uncertainty-Aware Context Memory Network for Under-Display Camera Image Restoration},
+      author    = {Kim, Daehyun and Kim, Youngmin and Oh, Yoon Ju and Kim, Tae Hyun},
+      booktitle = {Computer Vision and Pattern Recognition (CVPR)},
+      year      = {2026}
+    }</code></pre>
+  </div>
+</section>
+
+
+<footer class="footer">
+  <div class="container">
+    <div class="content has-text-centered">
+      <a class="icon-link" href="https://arxiv.org/abs/2309.03897" target="_blank">
+        <i class="fas fa-file-pdf"></i>
+      </a>
+      <a class="icon-link" href="https://github.com/sczhou/ProPainter" target="_blank">
+        <i class="fab fa-github"></i>
+      </a>
+      <a class="icon-link" href="https://huggingface.co/spaces/sczhou/ProPainter" target="_blank">
+        <img src="./assets/images/hf_black.png">
+      </a>
+      <a class="icon-link" href="https://youtu.be/92EHfgCO5-Q" target="_blank">
+        <i class="fab fa-youtube"></i>
+      </a>
+    </div>
+
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content">
+          <div class="columns is-centered"><p>
+            This website template is borrowed from <a href="https://github.com/nerfies/nerfies.github.io" target="_blank">Here</a>. 
+            Feel free to clone this website's <a href="https://github.com/sczhou/ProPainter_website" target="_blank">source code</a>.
+            Thank you!
+          </p></div>
         </div>
       </div>
     </div>
-  </footer>
 
+    <!--=================Visitor==========================-->
+    <div class="content has-text-centered" style="padding:0 0 0 0">
+      <img src='https://api.infinitescript.com/badgen/count?name=sczhou/ProPainter&ltext=Visitors&color=3977dd' alt='visitors'>
+    </div>
+
+  </div>
+</footer>
+
+  <!-- custom js file  -->
+  <!-- <script defer src="./assets/js/fontawesome.all.min.js"></script> -->
   <script src="./assets/js/bulma-carousel.min.js"></script>
   <script src="./assets/js/bulma-slider.min.js"></script>
   <script src="./assets/js/index.js"></script>
   <script src="./assets/js/jquery.event.move.js"></script>
   <script src="./assets/js/jquery.twentytwenty.js"></script>
-
   <script>
-    function initTwentyTwentyInVisibleItems() {
-      $('.twentytwenty-container').each(function () {
-        const $el = $(this);
-        if ($el.hasClass('twentytwenty-initialized')) return;
-
-        const imgs = $el.find('img');
-        if (imgs.length !== 2) return;
-
-        const firstImg = imgs.get(0);
-        const secondImg = imgs.get(1);
-
-        if (!firstImg.complete || !secondImg.complete) return;
-
-        $el.twentytwenty({
-          default_offset_pct: parseFloat($el.attr('data-default_offset_pct')) || 0.5
-        });
-        $el.addClass('twentytwenty-initialized');
-      });
-    }
-
-    $(window).on('load', function () {
-      if (typeof bulmaCarousel !== 'undefined') {
-        bulmaCarousel.attach('#results-carousel', {
-          slidesToScroll: 1,
-          slidesToShow: 3,
-          loop: true,
-          infinite: true
-        });
-
-        bulmaCarousel.attach('#results-carousel-2', {
-          slidesToScroll: 1,
-          slidesToShow: 3,
-          loop: true,
-          infinite: true
-        });
-      }
-
-      initTwentyTwentyInVisibleItems();
-
-      setTimeout(function () {
-        initTwentyTwentyInVisibleItems();
-      }, 400);
-
-      setTimeout(function () {
-        initTwentyTwentyInVisibleItems();
-      }, 1000);
-    });
+  $(function(){
+    $(".twentytwenty-container").twentytwenty();
+    // $(".twentytwenty-container", "#results-carousel").twentytwenty({default_offset_pct: 0.5, ratio: 0.5});
+  });
   </script>
 </body>
-
 </html>
