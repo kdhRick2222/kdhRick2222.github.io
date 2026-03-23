@@ -656,10 +656,25 @@
   <script src="./assets/js/jquery.event.move.js"></script>
   <script src="./assets/js/jquery.twentytwenty.js"></script>
   <script>
-  $(function(){
-    $(".twentytwenty-container").twentytwenty();
-    $(".twentytwenty-container", "#results-carousel").twentytwenty({default_offset_pct: 0.5, ratio: 0.5});
-  });
+    $(function(){
+      // 최초 초기화
+      $(".twentytwenty-container").twentytwenty({ default_offset_pct: 0.5 });
+  
+      // 슬라이드 전환 시 재초기화
+      var carousels = bulmaCarousel.attach('.carousel', {
+        slidesToScroll: 1,
+        slidesToShow: 1,
+        loop: true,
+        infinite: true,
+        autoplay: false,
+      });
+  
+      carousels.forEach(function(carousel) {
+        carousel.on('after:show', function() {
+          $(".twentytwenty-container").twentytwenty({ default_offset_pct: 0.5 });
+        });
+      });
+    });
   </script>
 </body>
 </html>
