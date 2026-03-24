@@ -4,10 +4,10 @@
 <head>
     <meta charset="utf-8">
     <meta name="description"
-        content="Continuous Degradation Modeling via Latent Flow Matching for Real-World Super-Resolution. ">
-    <meta name="keywords" content="Flow Matching, Super-Resolution, Image Degradation, Real-World SR, Continuous Degradation Modeling">
+        content="Efficient Under-Display Camera Image Restoration Network via Memory Bank and Uncertainty Loss">
+    <meta name="keywords" content="Under-Display Camera, Image Restoration, Uncertainty Driven Loss, Memory Bank">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>DegFlow: Continuous Degradation Modeling via Latent Flow Matching for Real-World Super-Resolution</title>
+    <title>UCMNet: Uncertainty-Aware Context Memory Network for Under-Display Camera Image Restoration</title>
 
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-PYVRSFMDRL"></script>
@@ -56,17 +56,6 @@
                         <i class="fas fa-home"></i>
                     </span>
                 </a>
-
-                <div class="navbar-item has-dropdown is-hoverable">
-                    <a class="navbar-link">
-                        More Research
-                    </a>
-                    <div class="navbar-dropdown">
-                        <a class="navbar-item" href="https://github.com/dongjinkim9/InterFlow">
-                            Interflow
-                        </a>
-                    </div>
-                </div>
             </div>
         </div>
     </nav>
@@ -79,45 +68,44 @@
                     <div class="column has-text-centered">
 
                         <div class="project-logo">
-                            <img src="./static/images/logo2.png" alt="IDF Logo">
+                            <img src="./assets/images/logo_UCMNet.png" alt="UCMNet Logo">
                         </div>
 
                         <h1 class="title is-1 publication-title">
-                            DegFlow: Continuous
-                            <span class="degflow-red">Deg</span>radation Modeling via
-                            Latent <span class="degflow-red">Flow</span> Matching for <br>
-                            Real-World Super-Resolution
+                            <span class="degflow-red">UCMNet</span>: 
+                            <span class="degflow-red">U</span>ncertainty-Aware 
+                            <span class="degflow-red">C</span>ontext 
+                            <span class="degflow-red">M</span>emory 
+                            <span class="degflow-red">Net</span>work for <br>
+                            Under-Display Camera Image Restoration
                         </h1>
 
                         <div class="idf-authors">
                             <div class="idf-author-names">
-                                <a href="#">Hyeonjae Kim</a><sup>1*</sup>,&nbsp;&nbsp;
-                                <a href="https://dongjinkim9.github.io">Dongjin Kim</a><sup>1*</sup>,&nbsp;&nbsp;
-                                <a href="#">Eugene Jin</a><sup>2</sup>,&nbsp;&nbsp;
-                                <a href="https://sites.google.com/view/lliger9/team/taehyunkim">Tae Hyun
-                                    Kim</a><sup>1†</sup>
+                                <a href="https://kdhrick2222.github.io/">Daehyun Kim</a><sup>1</sup>,&nbsp;&nbsp;
+                                <a href="https://sites.google.com/view/lliger9/home?authuser=0">Youngmin Kim</a><sup>1,2</sup>,&nbsp;&nbsp;
+                                <a href="https://sites.google.com/view/lliger9/home?authuser=0">Yoon Ju Oh</a><sup>1,2</sup>,&nbsp;&nbsp;
+                                <a href="https://sites.google.com/view/lliger9/team/taehyunkim">Tae Hyun Kim</a><sup>1†</sup>
                             </div>
 
                             <div class="idf-affiliation">
-                                <sup>1</sup>CS, Hanyang University &nbsp;&nbsp;&nbsp;
-                                <sup>2</sup>AI Application, Hanyang University
+                                <sup>1</sup>VILAB, Hanyang University &nbsp;&nbsp;&nbsp;
+                                <sup>2</sup>Agency for Defense Development (ADD)
                             </div>
 
                             <div class="idf-footnote">
-                                <span>*Equal Contribution</span>
-                                &nbsp;&nbsp;&nbsp;
                                 <span>†Corresponding Author</span>
                             </div>
 
                             <div class="idf-venue">
-                                AAAI 2026
+                                CVPR 2026
                             </div>
                         </div>
 
                         <div class="column has-text-centered">
                             <div class="publication-links">
                                 <span class="link-block">
-                                    <a href="https://arxiv.org/pdf/2602.04193"
+                                    <a href="#"
                                         class="external-link button is-normal is-rounded is-dark">
                                         <span class="icon">
                                             <i class="fas fa-file-pdf"></i>
@@ -127,7 +115,7 @@
                                 </span>
 
                                 <span class="link-block">
-                                    <a href="https://arxiv.org/abs/2602.04193"
+                                    <a href="#"
                                         class="external-link button is-normal is-rounded is-dark">
                                         <span class="icon">
                                             <i class="ai ai-arxiv"></i>
@@ -137,7 +125,7 @@
                                 </span>
 
                                 <span class="link-block">
-                                    <a href="https://github.com/present091/DegFlow"
+                                    <a href="https://github.com/kdhRick2222/UCMNet"
                                         class="external-link button is-normal is-rounded is-dark">
                                         <span class="icon">
                                             <i class="fab fa-github"></i>
@@ -176,23 +164,19 @@
                     <h2 class="title abstract-title has-text-centered">Abstract</h2>
                     <div class="content abstract-body">
                         <p>
-                            While deep learning-based super-resolution (SR) methods
-                            have shown impressive outcomes with synthetic degradation
-                            scenarios such as bicubic downsampling, they frequently struggle
-                            to perform well on real-world images that feature complex,
-                            nonlinear degradations like noise, blur, and compression artifacts.
-                            Recent efforts to address this issue have involved the
-                            painstaking compilation of real low-resolution (LR) and high-resolution (HR) image pairs,
-                            usually limited to several specific
-                            downscaling factors. To address these challenges, our work introduces a novel framework capable of synthesizing authentic
-                            LR images from a single HR image by leveraging the latent
-                            degradation space with flow matching. Our approach generates
-                            LR images with realistic artifacts at unseen degradation levels,
-                            which facilitates the creation of large-scale, real-world SR
-                            training datasets. Comprehensive quantitative and qualitative
-                            assessments verify that our synthetic LR images accurately
-                            replicate real-world degradations. Furthermore, both traditional and arbitrary-scale SR models trained using our datasets
-                            consistently yield much better HR outcomes.
+                            Under-display cameras (UDCs) allow for full-screen designs by positioning the imaging sensor underneath the display. 
+                            Nonetheless, light diffraction and scattering through the various display layers result in spatially varying and complex degradations, 
+                            which significantly reduce high-frequency details. Current PSF-based physical modeling techniques and frequency-separation networks are 
+                            effective at reconstructing low-frequency structures and maintaining overall color consistency. 
+                            However, they still face challenges in recovering fine details when dealing with complex, spatially varying degradation. 
+                            To solve this problem, we propose a lightweight Uncertainty-aware Context-Memory Network (UCMNet), for UDC image restoration. 
+                            Unlike previous methods that apply uniform restoration, UCMNet performs uncertainty-aware adaptive processing to restore 
+                            high-frequency details in regions with varying degradations. 
+                            The estimated uncertainty maps, learned through an uncertainty-driven loss, quantify spatial uncertainty induced by diffraction 
+                            and scattering, and guide the Memory Bank to retrieve region-adaptive context from the Context Bank. 
+                            This process enables effective modeling of the non-uniform degradation characteristics inherent to UDC imaging. 
+                            Leveraging this uncertainty as a prior, UCMNet achieves state-of-the-art performance on multiple benchmarks with 
+                            30\% fewer parameters than previous models.
                         </p>
                     </div>
                 </div>
@@ -205,24 +189,24 @@
     <div class="container is-max-widescreen">
         <div class="columns is-centered">
             <div class="column is-10">
-                <h2 class="title has-text-centered glvq-title">Generated Continuous-Scale LR Images</h2>
+                <h2 class="title has-text-centered glvq-title">Under-Display Camera Image Restoration</h2>
 
                 <div class="glvq-content">
                     <!-- Bicubic vs DegFlow compare -->
                     <div class="glvq-compare-panel">
                         <div class="glvq-compare" id="glvq-compare">
                             <img id="glvq-degflow-image" class="glvq-compare-base"
-                                src="./static/images/generated_lr_visual_quality/set1/degflow/frame_00.png"
-                                alt="DegFlow generated LR image">
+                                src="./assets/examples/POLED_IR/input_16.png"
+                                alt="POLED LR image">
 
                             <div class="glvq-compare-overlay" id="glvq-compare-overlay">
                                 <img id="glvq-bicubic-image"
-                                    src="./static/images/generated_lr_visual_quality/set1/bicubic/frame_00.png"
-                                    alt="Bicubic LR image">
+                                    src="./assets/examples/POLED_IR/prediction_16.png"
+                                    alt="POLED IR image">
                             </div>
 
-                            <div class="glvq-compare-label glvq-compare-label-left">Bicubic</div>
-                            <div class="glvq-compare-label glvq-compare-label-right">DegFlow (Ours)</div>
+                            <div class="glvq-compare-label glvq-compare-label-left">Before</div>
+                            <div class="glvq-compare-label glvq-compare-label-right">After</div>
 
                             <div class="glvq-compare-divider" id="glvq-compare-divider"></div>
                             <input id="glvq-compare-range" class="glvq-compare-range" type="range"
