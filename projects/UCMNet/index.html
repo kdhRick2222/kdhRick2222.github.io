@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="description"
+        content="Continuous Degradation Modeling via Latent Flow Matching for Real-World Super-Resolution. ">
+    <meta name="keywords" content="Flow Matching, Super-Resolution, Image Degradation, Real-World SR, Continuous Degradation Modeling">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>DegFlow: Continuous Degradation Modeling via Latent Flow Matching for Real-World Super-Resolution</title>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-PYVRSFMDRL"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+
+        gtag('js', new Date());
+        gtag('config', 'G-PYVRSFMDRL');
+    </script>
+
+    <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+
+    <link rel="stylesheet" href="./static/css/bulma.min.css">
+    <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+    <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+    <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+    <link rel="stylesheet" href="./static/css/index.css">
+    <link rel="icon" href="./static/images/favicon.svg">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script defer src="./static/js/fontawesome.all.min.js"></script>
+    <script src="./static/js/bulma-carousel.min.js"></script>
+    <script src="./static/js/bulma-slider.min.js"></script>
+    <script src="./static/js/index.js"></script>
+</head>
+
+<body>
+
+    <nav class="navbar" role="navigation" aria-label="main navigation">
+        <div class="navbar-brand">
+            <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+            </a>
+        </div>
+        <div class="navbar-menu">
+            <div class="navbar-start" style="flex-grow: 1; justify-content: center;">
+                <a class="navbar-item" href="https://sites.google.com/view/lliger9/home">
+                    <span class="icon">
+                        <i class="fas fa-home"></i>
+                    </span>
+                </a>
+
+                <div class="navbar-item has-dropdown is-hoverable">
+                    <a class="navbar-link">
+                        More Research
+                    </a>
+                    <div class="navbar-dropdown">
+                        <a class="navbar-item" href="https://github.com/dongjinkim9/InterFlow">
+                            Interflow
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+
+    <section class="hero">
+        <div class="hero-body">
+            <div class="container is-max-desktop">
+                <div class="columns is-centered">
+                    <div class="column has-text-centered">
+
+                        <div class="project-logo">
+                            <img src="./static/images/logo2.png" alt="IDF Logo">
+                        </div>
+
+                        <h1 class="title is-1 publication-title">
+                            DegFlow: Continuous
+                            <span class="degflow-red">Deg</span>radation Modeling via
+                            Latent <span class="degflow-red">Flow</span> Matching for <br>
+                            Real-World Super-Resolution
+                        </h1>
+
+                        <div class="idf-authors">
+                            <div class="idf-author-names">
+                                <a href="#">Hyeonjae Kim</a><sup>1*</sup>,&nbsp;&nbsp;
+                                <a href="https://dongjinkim9.github.io">Dongjin Kim</a><sup>1*</sup>,&nbsp;&nbsp;
+                                <a href="#">Eugene Jin</a><sup>2</sup>,&nbsp;&nbsp;
+                                <a href="https://sites.google.com/view/lliger9/team/taehyunkim">Tae Hyun
+                                    Kim</a><sup>1†</sup>
+                            </div>
+
+                            <div class="idf-affiliation">
+                                <sup>1</sup>CS, Hanyang University &nbsp;&nbsp;&nbsp;
+                                <sup>2</sup>AI Application, Hanyang University
+                            </div>
+
+                            <div class="idf-footnote">
+                                <span>*Equal Contribution</span>
+                                &nbsp;&nbsp;&nbsp;
+                                <span>†Corresponding Author</span>
+                            </div>
+
+                            <div class="idf-venue">
+                                AAAI 2026
+                            </div>
+                        </div>
+
+                        <div class="column has-text-centered">
+                            <div class="publication-links">
+                                <span class="link-block">
+                                    <a href="https://arxiv.org/pdf/2602.04193"
+                                        class="external-link button is-normal is-rounded is-dark">
+                                        <span class="icon">
+                                            <i class="fas fa-file-pdf"></i>
+                                        </span>
+                                        <span>Paper</span>
+                                    </a>
+                                </span>
+
+                                <span class="link-block">
+                                    <a href="https://arxiv.org/abs/2602.04193"
+                                        class="external-link button is-normal is-rounded is-dark">
+                                        <span class="icon">
+                                            <i class="ai ai-arxiv"></i>
+                                        </span>
+                                        <span>arXiv</span>
+                                    </a>
+                                </span>
+
+                                <span class="link-block">
+                                    <a href="https://github.com/present091/DegFlow"
+                                        class="external-link button is-normal is-rounded is-dark">
+                                        <span class="icon">
+                                            <i class="fab fa-github"></i>
+                                        </span>
+                                        <span>Code</span>
+                                    </a>
+                                </span>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section tldr-section">
+        <div class="container is-max-widescreen">
+            <div class="columns is-centered">
+                <div class="column is-10">
+                    <p class="tldr-line has-text-centered">
+                        <span class="tldr-label">✨TL;DR:</span>
+                        We present a <b>continuous-scale realistic LR generation framework</b>
+                        <br>for improving <b>real-world super-resolution.</b> ✨
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section abstract-section">
+        <div class="container is-max-widescreen">
+            <div class="columns is-centered">
+                <div class="column is-10">
+                    <h2 class="title abstract-title has-text-centered">Abstract</h2>
+                    <div class="content abstract-body">
+                        <p>
+                            While deep learning-based super-resolution (SR) methods
+                            have shown impressive outcomes with synthetic degradation
+                            scenarios such as bicubic downsampling, they frequently struggle
+                            to perform well on real-world images that feature complex,
+                            nonlinear degradations like noise, blur, and compression artifacts.
+                            Recent efforts to address this issue have involved the
+                            painstaking compilation of real low-resolution (LR) and high-resolution (HR) image pairs,
+                            usually limited to several specific
+                            downscaling factors. To address these challenges, our work introduces a novel framework capable of synthesizing authentic
+                            LR images from a single HR image by leveraging the latent
+                            degradation space with flow matching. Our approach generates
+                            LR images with realistic artifacts at unseen degradation levels,
+                            which facilitates the creation of large-scale, real-world SR
+                            training datasets. Comprehensive quantitative and qualitative
+                            assessments verify that our synthetic LR images accurately
+                            replicate real-world degradations. Furthermore, both traditional and arbitrary-scale SR models trained using our datasets
+                            consistently yield much better HR outcomes.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+<!-- Generated LR Visual Quality Section -->
+<section class="section" id="generated-lr-visual-quality">
+    <div class="container is-max-widescreen">
+        <div class="columns is-centered">
+            <div class="column is-10">
+                <h2 class="title has-text-centered glvq-title">Generated Continuous-Scale LR Images</h2>
+
+                <div class="glvq-content">
+                    <!-- Bicubic vs DegFlow compare -->
+                    <div class="glvq-compare-panel">
+                        <div class="glvq-compare" id="glvq-compare">
+                            <img id="glvq-degflow-image" class="glvq-compare-base"
+                                src="./static/images/generated_lr_visual_quality/set1/degflow/frame_00.png"
+                                alt="DegFlow generated LR image">
+
+                            <div class="glvq-compare-overlay" id="glvq-compare-overlay">
+                                <img id="glvq-bicubic-image"
+                                    src="./static/images/generated_lr_visual_quality/set1/bicubic/frame_00.png"
+                                    alt="Bicubic LR image">
+                            </div>
+
+                            <div class="glvq-compare-label glvq-compare-label-left">Bicubic</div>
+                            <div class="glvq-compare-label glvq-compare-label-right">DegFlow (Ours)</div>
+
+                            <div class="glvq-compare-divider" id="glvq-compare-divider"></div>
+                            <input id="glvq-compare-range" class="glvq-compare-range" type="range"
+                                min="0" max="100" value="50"
+                                aria-label="Comparison slider between Bicubic and DegFlow">
+                        </div>
+                    </div>
+
+                    <!-- step slider -->
+                    <div class="glvq-slider-wrap">
+                        <div class="glvq-slider-stage" id="glvq-slider-stage">
+                            <div class="glvq-slider-shell" id="glvq-slider-shell">
+                                <div class="glvq-slider-arrow-bar"></div>
+                                <input id="glvq-slider" class="glvq-slider" type="range" min="0" max="30" step="1"
+                                    value="30" aria-label="Generated LR step slider">
+                            </div>
+
+                            <div class="glvq-slider-label-layer" id="glvq-slider-label-layer">
+                                <span class="glvq-slider-label is-active" data-index="0">HR</span>
+                                <span class="glvq-slider-label" data-index="9">LR ×2</span>
+                                <span class="glvq-slider-label" data-index="19">LR ×3</span>
+                                <span class="glvq-slider-label" data-index="30">LR ×4</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <p class="glvq-instruction has-text-centered">
+                        Scroll to inspect continuous LR generation and compare it with bicubic using the slider.
+                    </p>
+
+                    <!-- scene buttons -->
+                    <div class="glvq-controls-row">
+                        <button class="glvq-set-button is-active" data-set="set1" type="button">LR Image 1</button>
+                        <button class="glvq-set-button" data-set="set2" type="button">LR Image 2</button>
+                        <button class="glvq-set-button" data-set="set3" type="button">LR Image 3</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- Real LR / DegFlow Trajectory Section -->
+<section class="section" id="trajectory-demo">
+    <div class="container is-max-fullhd">
+        <div class="columns is-centered">
+            <div class="column is-11 has-text-centered">
+                <h2 class="title video-title">Generated LR Visual Results</h2>
+
+                <div class="trajectory-demo">
+                    <!-- Row 1: Real -->
+                    <div class="trajectory-row trajectory-row--real">
+                        <div class="trajectory-label">
+                            <div>
+                                <span class="trajectory-row-title">Real Images</span>
+                            </div>
+                        </div>
+
+                        <div class="trajectory-strip trajectory-strip--real">
+                            <div class="trajectory-sequence-grid">
+                                <div class="trajectory-slot">
+                                    <div class="trajectory-card">
+                                        <div class="trajectory-image-frame trajectory-anchor" data-anchor="0">
+                                            <img src="./static/images/trajectory/set1/hr.png" alt="HR image">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="trajectory-slot trajectory-slot--empty"></div>
+
+                                <div class="trajectory-slot">
+                                    <div class="trajectory-card">
+                                        <div class="trajectory-image-frame trajectory-anchor" data-anchor="1">
+                                            <img src="./static/images/trajectory/set1/lr_x2.png" alt="Real LR x2 image">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="trajectory-slot trajectory-slot--empty"></div>
+
+                                <div class="trajectory-slot">
+                                    <div class="trajectory-card">
+                                        <div class="trajectory-image-frame trajectory-anchor" data-anchor="2">
+                                            <img src="./static/images/trajectory/set1/lr_x3.png" alt="Real LR x3 image">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="trajectory-slot trajectory-slot--empty"></div>
+
+                                <div class="trajectory-slot">
+                                    <div class="trajectory-card">
+                                        <div class="trajectory-image-frame trajectory-anchor" data-anchor="3">
+                                            <img src="./static/images/trajectory/set1/lr_x4.png" alt="Real LR x4 image">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Row 2: DegFlow -->
+                    <div class="trajectory-row trajectory-row--degflow">
+                        <div class="trajectory-label">
+                            <div>
+                                <span class="trajectory-row-title">DegFlow</span>
+                            </div>
+                        </div>
+
+                        <div class="trajectory-strip trajectory-strip--degflow" id="trajectory-sequence">
+                            <div class="trajectory-sequence-grid">
+                                <div class="trajectory-seq-card" data-frame-index="0">
+                                    <div class="trajectory-image-frame trajectory-seq-frame">
+                                        <img src="./static/images/trajectory/set1/frame_00.png" alt="DegFlow frame t=0.00">
+                                    </div>
+                                    <div class="trajectory-card-title trajectory-card-title--small">t = 0.00</div>
+                                </div>
+
+                                <div class="trajectory-seq-card" data-frame-index="1">
+                                    <div class="trajectory-image-frame trajectory-seq-frame">
+                                        <img src="./static/images/trajectory/set1/frame_01.png" alt="DegFlow frame t=0.17">
+                                    </div>
+                                    <div class="trajectory-card-title trajectory-card-title--small">t = 0.17</div>
+                                </div>
+
+                                <div class="trajectory-seq-card" data-frame-index="2">
+                                    <div class="trajectory-image-frame trajectory-seq-frame">
+                                        <img src="./static/images/trajectory/set1/frame_02.png" alt="DegFlow frame t=0.33">
+                                    </div>
+                                    <div class="trajectory-card-title trajectory-card-title--small">t = 0.33</div>
+                                </div>
+
+                                <div class="trajectory-seq-card" data-frame-index="3">
+                                    <div class="trajectory-image-frame trajectory-seq-frame">
+                                        <img src="./static/images/trajectory/set1/frame_03.png" alt="DegFlow frame t=0.50">
+                                    </div>
+                                    <div class="trajectory-card-title trajectory-card-title--small">t = 0.50</div>
+                                </div>
+
+                                <div class="trajectory-seq-card" data-frame-index="4">
+                                    <div class="trajectory-image-frame trajectory-seq-frame">
+                                        <img src="./static/images/trajectory/set1/frame_04.png" alt="DegFlow frame t=0.67">
+                                    </div>
+                                    <div class="trajectory-card-title trajectory-card-title--small">t = 0.67</div>
+                                </div>
+
+                                <div class="trajectory-seq-card" data-frame-index="5">
+                                    <div class="trajectory-image-frame trajectory-seq-frame">
+                                        <img src="./static/images/trajectory/set1/frame_05.png" alt="DegFlow frame t=0.83">
+                                    </div>
+                                    <div class="trajectory-card-title trajectory-card-title--small">t = 0.83</div>
+                                </div>
+
+                                <div class="trajectory-seq-card" data-frame-index="6">
+                                    <div class="trajectory-image-frame trajectory-seq-frame">
+                                        <img src="./static/images/trajectory/set1/frame_06.png" alt="DegFlow frame t=1.00">
+                                    </div>
+                                    <div class="trajectory-card-title trajectory-card-title--small">t = 1.00</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="trajectory-controls-row">
+                        <button class="trajectory-set-button is-active" data-set="set1" type="button">LR Image 1</button>
+                        <button class="trajectory-set-button" data-set="set2" type="button">LR Image 2</button>
+                        <button class="trajectory-set-button" data-set="set3" type="button">LR Image 3</button>
+                    </div>
+
+                    <div class="trajectory-header trajectory-header--bottom">
+                        <p>
+                            Top: real LR images at discrete degradation levels.<br>
+                            Bottom: DegFlow outputs arranged along a continuous trajectory.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Visual Quality Carousel Section -->
+<section class="section vq-carousel-section" id="visual-quality-carousel">
+    <div class="container is-fluid">
+        <div class="columns is-centered">
+            <div class="column is-12">
+                <h2 class="title has-text-centered">Unseen-Scale SR Results</h2>
+
+                <div class="vq-carousel-block">
+                    <button class="vq-carousel-nav vq-carousel-nav-left"
+                        id="vq-carousel-prev" type="button" aria-label="Previous slide">
+                        &lt;
+                    </button>
+
+                    <div class="vq-carousel-viewport" id="vq-carousel-viewport">
+                        <div class="vq-carousel-track" id="vq-carousel-track">
+                            <div class="vq-carousel-slide vq-carousel-slide-first">
+                                <div class="vq-carousel-slide-inner">
+                                    <img src="./static/images/visual_quality_carousel/slide1.png"
+                                        alt="Visual Quality slide 1">
+                                </div>
+                            </div>
+
+                            <div class="vq-carousel-slide">
+                                <div class="vq-carousel-slide-inner">
+                                    <img src="./static/images/visual_quality_carousel/slide2.png"
+                                        alt="Visual Quality slide 2">
+                                </div>
+                            </div>
+
+                            <div class="vq-carousel-slide">
+                                <div class="vq-carousel-slide-inner">
+                                    <img src="./static/images/visual_quality_carousel/slide3.png"
+                                        alt="Visual Quality slide 3">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="vq-carousel-nav vq-carousel-nav-right"
+                        id="vq-carousel-next" type="button" aria-label="Next slide">
+                        &gt;
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- SR Visual Quality Section -->
+<section class="section" id="visual-quality">
+    <div class="container is-fluid">
+        <div class="columns is-centered">
+            <div class="column is-12">
+                <h2 class="title has-text-centered">SR Comparison</h2>
+
+                <div class="visual-quality-top-tabs" id="vq-top-tabs">
+                    <button class="vq-top-tab is-active" data-mode="fixed" type="button">Fixed-Scale SR</button>
+                    <button class="vq-top-tab" data-mode="arbitrary" type="button">Arbitrary-scale SR</button>
+                </div>
+
+                <div class="visual-quality-block visual-quality-block--wide">
+                    <!-- Fixed-scale content -->
+                    <div class="vq-mode-panel is-active" id="vq-fixed-panel">
+                        <div class="visual-quality-button-row" id="vq-model-buttons">
+                            <button class="vq-button is-active" data-model="han" type="button">HAN</button>
+                            <button class="vq-button" data-model="swinir" type="button">SwinIR</button>
+                            <button class="vq-button" data-model="mambair" type="button">MambaIR</button>
+                        </div>
+
+                        <div class="vq-triptych">
+
+                            <!-- Set 1 -->
+                            <div class="vq-set" data-set="set1">
+                                <div class="vq-overview-card">
+                                    <div class="vq-overview-image-frame">
+                                        <img class="vq-overview-image"
+                                            src="./static/images/visual_quality_triptych/han/set1/overview.png"
+                                            alt="Set 1 overview image">
+                                    </div>
+                                </div>
+
+                                <div class="vq-source-column">
+                                    <div class="vq-source-card">
+                                        <div class="vq-source-image-frame">
+                                            <img class="vq-hr-image"
+                                                src="./static/images/visual_quality_triptych/han/set1/hr.png"
+                                                alt="Set 1 HR image">
+                                        </div>
+                                        <div class="vq-source-label">HR</div>
+                                    </div>
+
+                                    <div class="vq-source-card">
+                                        <div class="vq-source-image-frame">
+                                            <img class="vq-lr-image"
+                                                src="./static/images/visual_quality_triptych/han/set1/lr.png"
+                                                alt="Set 1 LR image">
+                                        </div>
+                                        <div class="vq-source-label">LR (x3)</div>
+                                    </div>
+                                </div>
+
+                                <div class="vq-compare-panel">
+                                    <div class="vq-compare">
+                                        <img class="vq-compare-base vq-degflow-image"
+                                            src="./static/images/visual_quality_triptych/han/set1/degflow.png"
+                                            alt="Set 1 DegFlow result">
+
+                                        <div class="vq-compare-overlay">
+                                            <img class="vq-interflow-image"
+                                                src="./static/images/visual_quality_triptych/han/set1/interflow.png"
+                                                alt="Set 1 InterFlow result">
+                                        </div>
+
+                                        <div class="vq-compare-label vq-compare-label-left">InterFlow</div>
+                                        <div class="vq-compare-label vq-compare-label-right">DegFlow (Ours)</div>
+
+                                        <div class="vq-compare-divider"></div>
+                                        <input class="vq-compare-range" type="range" min="0" max="100" value="50"
+                                            aria-label="Comparison slider for fixed-scale set 1">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Set 2 -->
+                            <div class="vq-set" data-set="set2">
+                                <div class="vq-overview-card">
+                                    <div class="vq-overview-image-frame">
+                                        <img class="vq-overview-image"
+                                            src="./static/images/visual_quality_triptych/han/set2/overview.png"
+                                            alt="Set 2 overview image">
+                                    </div>
+                                </div>
+
+                                <div class="vq-source-column">
+                                    <div class="vq-source-card">
+                                        <div class="vq-source-image-frame">
+                                            <img class="vq-hr-image"
+                                                src="./static/images/visual_quality_triptych/han/set2/hr.png"
+                                                alt="Set 2 HR image">
+                                        </div>
+                                        <div class="vq-source-label">HR</div>
+                                    </div>
+
+                                    <div class="vq-source-card">
+                                        <div class="vq-source-image-frame">
+                                            <img class="vq-lr-image"
+                                                src="./static/images/visual_quality_triptych/han/set2/lr.png"
+                                                alt="Set 2 LR image">
+                                        </div>
+                                        <div class="vq-source-label">LR (x3)</div>
+                                    </div>
+                                </div>
+
+                                <div class="vq-compare-panel">
+                                    <div class="vq-compare">
+                                        <img class="vq-compare-base vq-degflow-image"
+                                            src="./static/images/visual_quality_triptych/han/set2/degflow.png"
+                                            alt="Set 2 DegFlow result">
+
+                                        <div class="vq-compare-overlay">
+                                            <img class="vq-interflow-image"
+                                                src="./static/images/visual_quality_triptych/han/set2/interflow.png"
+                                                alt="Set 2 InterFlow result">
+                                        </div>
+
+                                        <div class="vq-compare-label vq-compare-label-left">InterFlow</div>
+                                        <div class="vq-compare-label vq-compare-label-right">DegFlow (Ours)</div>
+
+                                        <div class="vq-compare-divider"></div>
+                                        <input class="vq-compare-range" type="range" min="0" max="100" value="50"
+                                            aria-label="Comparison slider for fixed-scale set 2">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Set 3 -->
+                            <div class="vq-set" data-set="set3">
+                                <div class="vq-overview-card">
+                                    <div class="vq-overview-image-frame">
+                                        <img class="vq-overview-image"
+                                            src="./static/images/visual_quality_triptych/han/set3/overview.png"
+                                            alt="Set 3 overview image">
+                                    </div>
+                                </div>
+
+                                <div class="vq-source-column">
+                                    <div class="vq-source-card">
+                                        <div class="vq-source-image-frame">
+                                            <img class="vq-hr-image"
+                                                src="./static/images/visual_quality_triptych/han/set3/hr.png"
+                                                alt="Set 3 HR image">
+                                        </div>
+                                        <div class="vq-source-label">HR</div>
+                                    </div>
+
+                                    <div class="vq-source-card">
+                                        <div class="vq-source-image-frame">
+                                            <img class="vq-lr-image"
+                                                src="./static/images/visual_quality_triptych/han/set3/lr.png"
+                                                alt="Set 3 LR image">
+                                        </div>
+                                        <div class="vq-source-label">LR (x3)</div>
+                                    </div>
+                                </div>
+
+                                <div class="vq-compare-panel">
+                                    <div class="vq-compare">
+                                        <img class="vq-compare-base vq-degflow-image"
+                                            src="./static/images/visual_quality_triptych/han/set3/degflow.png"
+                                            alt="Set 3 DegFlow result">
+
+                                        <div class="vq-compare-overlay">
+                                            <img class="vq-interflow-image"
+                                                src="./static/images/visual_quality_triptych/han/set3/interflow.png"
+                                                alt="Set 3 InterFlow result">
+                                        </div>
+
+                                        <div class="vq-compare-label vq-compare-label-left">InterFlow</div>
+                                        <div class="vq-compare-label vq-compare-label-right">DegFlow (Ours)</div>
+
+                                        <div class="vq-compare-divider"></div>
+                                        <input class="vq-compare-range" type="range" min="0" max="100" value="50"
+                                            aria-label="Comparison slider for fixed-scale set 3">
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- Arbitrary-scale content -->
+                    <div class="vq-mode-panel" id="vq-arbitrary-panel">
+                        <div class="vq-triptych">
+
+                            <!-- Set 1 -->
+                            <div class="vq-set">
+                                <div class="vq-overview-card">
+                                    <div class="vq-overview-image-frame">
+                                        <img src="./static/images/arbitrary_visual_quality/set1/overview.png"
+                                            alt="MetaSR overview image">
+                                    </div>
+                                    <div class="vq-overview-label">MetaSR</div>
+                                </div>
+
+                                <div class="vq-source-column">
+                                    <div class="vq-source-card">
+                                        <div class="vq-source-image-frame">
+                                            <img src="./static/images/arbitrary_visual_quality/set1/hr.png"
+                                                alt="MetaSR HR image">
+                                        </div>
+                                        <div class="vq-source-label">HR</div>
+                                    </div>
+
+                                    <div class="vq-source-card">
+                                        <div class="vq-source-image-frame">
+                                            <img src="./static/images/arbitrary_visual_quality/set1/lr.png"
+                                                alt="MetaSR LR image">
+                                        </div>
+                                        <div class="vq-source-label">LR</div>
+                                    </div>
+                                </div>
+
+                                <div class="vq-compare-panel">
+                                    <div class="vq-compare">
+                                        <img class="vq-compare-base"
+                                            src="./static/images/arbitrary_visual_quality/set1/degflow.png"
+                                            alt="MetaSR DegFlow result">
+
+                                        <div class="vq-compare-overlay">
+                                            <img src="./static/images/arbitrary_visual_quality/set1/interflow.png"
+                                                alt="MetaSR InterFlow result">
+                                        </div>
+
+                                        <div class="vq-compare-label vq-compare-label-left">InterFlow</div>
+                                        <div class="vq-compare-label vq-compare-label-right">DegFlow (Ours)</div>
+
+                                        <div class="vq-compare-divider"></div>
+                                        <input class="vq-compare-range" type="range" min="0" max="100" value="50"
+                                            aria-label="Comparison slider for arbitrary-scale set 1">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Set 2 -->
+                            <div class="vq-set">
+                                <div class="vq-overview-card">
+                                    <div class="vq-overview-image-frame">
+                                        <img src="./static/images/arbitrary_visual_quality/set2/overview.png"
+                                            alt="LIIF overview image">
+                                    </div>
+                                    <div class="vq-overview-label">LIIF</div>
+                                </div>
+
+                                <div class="vq-source-column">
+                                    <div class="vq-source-card">
+                                        <div class="vq-source-image-frame">
+                                            <img src="./static/images/arbitrary_visual_quality/set2/hr.png"
+                                                alt="LIIF HR image">
+                                        </div>
+                                        <div class="vq-source-label">HR</div>
+                                    </div>
+
+                                    <div class="vq-source-card">
+                                        <div class="vq-source-image-frame">
+                                            <img src="./static/images/arbitrary_visual_quality/set2/lr.png"
+                                                alt="LIIF LR image">
+                                        </div>
+                                        <div class="vq-source-label">LR</div>
+                                    </div>
+                                </div>
+
+                                <div class="vq-compare-panel">
+                                    <div class="vq-compare">
+                                        <img class="vq-compare-base"
+                                            src="./static/images/arbitrary_visual_quality/set2/degflow.png"
+                                            alt="LIIF DegFlow result">
+
+                                        <div class="vq-compare-overlay">
+                                            <img src="./static/images/arbitrary_visual_quality/set2/interflow.png"
+                                                alt="LIIF InterFlow result">
+                                        </div>
+
+                                        <div class="vq-compare-label vq-compare-label-left">InterFlow</div>
+                                        <div class="vq-compare-label vq-compare-label-right">DegFlow (Ours)</div>
+
+                                        <div class="vq-compare-divider"></div>
+                                        <input class="vq-compare-range" type="range" min="0" max="100" value="50"
+                                            aria-label="Comparison slider for arbitrary-scale set 2">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Set 3 -->
+                            <div class="vq-set">
+                                <div class="vq-overview-card">
+                                    <div class="vq-overview-image-frame">
+                                        <img src="./static/images/arbitrary_visual_quality/set3/overview.png"
+                                            alt="CiaoSR overview image">
+                                    </div>
+                                    <div class="vq-overview-label">CiaoSR</div>
+                                </div>
+
+                                <div class="vq-source-column">
+                                    <div class="vq-source-card">
+                                        <div class="vq-source-image-frame">
+                                            <img src="./static/images/arbitrary_visual_quality/set3/hr.png"
+                                                alt="CiaoSR HR image">
+                                        </div>
+                                        <div class="vq-source-label">HR</div>
+                                    </div>
+
+                                    <div class="vq-source-card">
+                                        <div class="vq-source-image-frame">
+                                            <img src="./static/images/arbitrary_visual_quality/set3/lr.png"
+                                                alt="CiaoSR LR image">
+                                        </div>
+                                        <div class="vq-source-label">LR</div>
+                                    </div>
+                                </div>
+
+                                <div class="vq-compare-panel">
+                                    <div class="vq-compare">
+                                        <img class="vq-compare-base"
+                                            src="./static/images/arbitrary_visual_quality/set3/degflow.png"
+                                            alt="CiaoSR DegFlow result">
+
+                                        <div class="vq-compare-overlay">
+                                            <img src="./static/images/arbitrary_visual_quality/set3/interflow.png"
+                                                alt="CiaoSR InterFlow result">
+                                        </div>
+
+                                        <div class="vq-compare-label vq-compare-label-left">InterFlow</div>
+                                        <div class="vq-compare-label vq-compare-label-right">DegFlow (Ours)</div>
+
+                                        <div class="vq-compare-divider"></div>
+                                        <input class="vq-compare-range" type="range" min="0" max="100" value="50"
+                                            aria-label="Comparison slider for arbitrary-scale set 3">
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- Main Figure Section -->
+<section class="section" id="main-figure">
+    <div class="container is-max-widescreen">
+        <div class="columns is-centered">
+            <div class="column is-11">
+                <h2 class="title has-text-centered">Framework Overview</h2>
+
+                <div class="main-figure-block">
+                    <img src="./static/images/main_figure/main_figure.png" alt="Main Figure">
+                </div>
+
+                <p class="main-figure-caption has-text-centered">
+                    Overview of the proposed method. (a) Two-stage training phase. (b) Inference phase.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!--Lpips Section-->
+
+<section class="section" id="lpips-supervision">
+    <div class="container is-max-widescreen">
+        <div class="columns is-centered">
+            <div class="column is-11">
+                <h2 class="title has-text-centered">
+                    LPIPS-based Preceptual Supervision for Nonlinear Flow Matching
+                </h2>
+
+                <div class="lpips-supervision-block">
+                    <img src="./static/images/lpips_supervision/lpips_supervision.png"
+                        alt="LPIPS-based Perceptual Supervision for Nonlinear Flow Matching">
+                </div>
+
+                <p class="lpips-supervision-caption has-text-centered">
+                    Illustration of applying LPIPS to nonlinear flow matching for perceptually meaningful degradation modeling.
+                </p>
+            </div>
+        </div>
+    </div>
+
+</section>
+<!-- Citation Section -->
+<section class="section" id="BibTeX">
+    <div class="container is-max-desktop content has-text-centered">
+        <h2 class="title">Citation</h2>
+        <pre class="citation-block"><code>@inproceedings{kim2026degflow,
+        title     = {Continuous Degradation Modeling via Latent Flow Matching for Real-World Super-Resolution},
+        author    = {Kim, Hyeonjae and Kim, Dongjin and Jin, Eugene and Kim, Taehyun},
+        booktitle = {Proceedings of the AAAI Conference on Artificial Intelligence},
+        year      = {2026}
+}</code></pre>
+    </div>
+</section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="content has-text-centered">
+                <a class="icon-link" href="https://arxiv.org/pdf/2602.04193">
+                    <i class="fas fa-file-pdf"></i>
+                </a>
+                <a class="icon-link" href="https://github.com/present091/DegFlow" class="external-link" disabled>
+                    <i class="fab fa-github"></i>
+                </a>
+            </div>
+
+        <div class="columns is-centered">
+            <div class="column is-8">
+                <div class="content has-text-centered">
+                    <p>
+                        The website template was borrowed from Gaussian Object.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+            <div class="content has-text-centered" style="margin-top: 1.5rem;">
+                <p style="margin-bottom: 0.25rem; font-weight: 600;">
+                    Visitor Count
+                </p>
+                <img src="https://stuff.mit.edu/cgi/counter/degflow" alt="visitor counter" />
+            </div>
+        </div>
+    </footer>
+
+</body>
+
+</html>
