@@ -568,9 +568,9 @@
 
   </div>
 </footer>
-
-  <!-- custom js file  -->
-  <!-- <script src="./assets/js/bulma-carousel.min.js"></script>
+<!-- 
+  custom js file  -->
+  <script src="./assets/js/bulma-carousel.min.js"></script>
   <script src="./assets/js/bulma-slider.min.js"></script>
   <script src="./assets/js/index.js"></script>
   <script src="./assets/js/jquery.event.move.js"></script>
@@ -599,33 +599,6 @@
         });
       });
     });
-  </script> -->
-  <script>
-  $(window).on('load', function () {
-    if (typeof bulmaCarousel !== 'undefined') {
-      bulmaCarousel.attach('.carousel', {
-        slidesToScroll: 1,
-        slidesToShow: 1,
-        loop: true,
-        infinite: true,
-        autoplay: false
-      });
-    }
-
-    $('.twentytwenty-container').each(function () {
-      const $el = $(this);
-
-      if ($el.hasClass('twentytwenty-initialized')) return;
-
-      const offset = parseFloat($el.attr('data-default_offset_pct')) || 0.5;
-
-      $el.twentytwenty({
-        default_offset_pct: offset
-      });
-
-      $el.addClass('twentytwenty-initialized');
-    });
-  });
   </script>
 </body>
 </html>
