@@ -1,16 +1,16 @@
 # ProPainter
 
-This is the source code to the [ProPainter website](https://shangchenzhou.com/projects/ProPainter).
+This is the source code to the [UCMNet website](https://kdhrick2222.github.io/projects/UCMNet).
 Feel free to clone this code for your own personal use.
 
 
-If you find ProPainter useful for your work please [star](https://github.com/sczhou/ProPainter) and cite:
+If you find ProPainter useful for your work please [star](https://github.com/kdhRick2222/UCMNet) and cite:
 ```
-@InProceedings{zhou2023propainter,
-      title     = {{ProPainter}: Improving Propagation and Transformer for Video Inpainting},
-      author    = {Zhou, Shangchen and Li, Chongyi and Chan, Kelvin C.K and Loy, Chen Change},
-      booktitle = {Proceedings of IEEE International Conference on Computer Vision (ICCV)},
-      year      = {2023}
+@inproceedings{kim2025UCMNet,
+  title={UCMNet: Uncertainty-Aware Context Memory Network for Under-Display Camera Image Restoration},
+  author={Kim, Daehyun and Kim, Youngmin and Oh, Yoon Ju and Kim, Tae Hyun},
+  booktitle={Computer Vision and Pattern Recognition (CVPR)},
+  year={2026}
 }
 ```
 
