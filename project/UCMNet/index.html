@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="Efficient Under-Display Camera Image Restoration Network via Memory Bank and Uncertainty Loss.">
+    <meta name="keywords" content="Under-Display Camera, Image Restoration, Uncertainty Driven Loss, Memory Bank">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>UCMNet: Uncertainty-Aware Context Memory Network for Under-Display Camera Image Restoration</title>
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-PYVRSFMDRL"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-PYVRSFMDRL');
+    </script>
+
+    <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+    <link rel="stylesheet" href="./static/css/bulma.min.css">
+    <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+    <link rel="stylesheet" href="./static/css/index.css">
+    <link rel="icon" href="./static/images/favicon.svg">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <style>
+        .ucmnet-red { color: #fb5a42; }
+
+        /* ── 섹션 배경색 ── */
+        .bg-white { background-color: #ffffff; }
+        .bg-gray  { background-color: #f7f7f7; }
+
+        /* ── 섹션 테두리 ── */
+        section.section, section.hero {
+            border-bottom: 1px solid #e4e4e4;
+        }
+        footer.footer {
+            border-top: 1px solid #e4e4e4;
+        }
+
+        /* ── 탭 버튼 ── */
+        .dataset-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 28px;
+        }
+        .dataset-tab-btn {
+            padding: 8px 32px;
+            border: 2px solid #fb5a42;
+            background: transparent;
+            color: #fb5a42;
+            border-radius: 999px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s, color 0.2s;
+        }
+        .dataset-tab-btn.is-active {
+            background: #fb5a42;
+            color: #fff;
+        }
+        .dataset-tab-btn:hover:not(.is-active) {
+            background: rgba(251, 90, 66, 0.08);
+        }
+
+        /* ── 패널 숨김/표시 ── */
+        .dataset-panel { display: none; }
+        .dataset-panel.is-active { display: block; }
+
+        /* ── 로고 ── */
+        .project-logo img {
+            width: 100px !important;
+            height: auto !important;
+        }
+
+        /* ── 제목 폰트 크기 ── */
+        h1.publication-title {
+            font-size: 2.1rem !important;
+            line-height: 1.4 !important;
+        }
+
+        /* ── 3열 그리드 ── */
+        .compare-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+        @media (max-width: 768px) {
+            .compare-grid { grid-template-columns: 1fr; }
+        }
+
+        /* comparison 섹션: 그리드 칸 자체를 작게 → 비율 자동 유지 */
+        #cmp-toled .compare-grid,
+        #cmp-poled .compare-grid,
+        #cmp-synth .compare-grid {
+            grid-template-columns: repeat(3, minmax(0, 240px));
+            justify-content: center;
+            gap: 12px;
+        }
+
+        /* ── glvq-compare 방식 슬라이더 (동일 패턴) ── */
+        .ucm-compare {
+            position: relative;
+            overflow: hidden;
+            cursor: col-resize;
+            --split: 50%;
+        }
+        .ucm-compare img {
+            display: block;
+            width: 100%;
+            pointer-events: none;
+        }
+        .ucm-compare-base {
+            display: block;
+            width: 100%;
+        }
+        .ucm-compare-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: var(--split);
+            height: 100%;
+            overflow: hidden;
+        }
+        .ucm-compare-overlay img {
+            width: 100%;
+            /* overlay 이미지는 원래 크기 유지하면서 클리핑 */
+            min-width: calc(100% / (var(--split) / 100%));
+        }
+        .ucm-compare-divider {
+            position: absolute;
+            top: 0;
+            left: var(--split);
+            width: 2px;
+            height: 100%;
+            background: #fff;
+            transform: translateX(-50%);
+            pointer-events: none;
+        }
+        .ucm-compare-divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 36px;
+            height: 36px;
+            background: #fff;
+            border-radius: 50%;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
+        .ucm-compare-divider::after {
+            content: '◀ ▶';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 10px;
+            color: #555;
+            white-space: nowrap;
+        }
+        .ucm-compare-label {
+            position: absolute;
+            top: 10px;
+            background: rgba(0,0,0,0.55);
+            color: #fff;
+            font-size: 0.78rem;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 4px;
+            pointer-events: none;
+            transition: opacity 0.15s;
+        }
+        .ucm-compare-label-left  { left: 10px; }
+        .ucm-compare-label-right { right: 10px; }
+        .ucm-compare-range {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: col-resize;
+            margin: 0;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar" role="navigation" aria-label="main navigation">
+        <div class="navbar-brand">
+            <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+            </a>
+        </div>
+        <div class="navbar-menu">
+            <div class="navbar-start" style="flex-grow: 1; justify-content: center;">
+                <a class="navbar-item" href="https://sites.google.com/view/lliger9/home">
+                    <span class="icon"><i class="fas fa-home"></i></span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+
+    <!-- ══════════ HERO ══════════ -->
+    <section class="hero">
+        <div class="hero-body">
+            <div class="container is-max-desktop">
+                <div class="columns is-centered">
+                    <div class="column has-text-centered">
+
+                        <div class="project-logo">
+                            <img src="./static/images/ucmnet_logo.png" alt="UCMNet Logo">
+                        </div>
+
+                        <h1 class="title is-1 publication-title">
+                            <span class="ucmnet-red">UCMNet</span>:
+                            <span class="ucmnet-red">U</span>ncertainty-Aware
+                            <span class="ucmnet-red">C</span>ontext
+                            <span class="ucmnet-red">M</span>emory
+                            <span class="ucmnet-red">Net</span>work for <br>
+                            Under-Display Camera Image Restoration
+                        </h1>
+
+                        <div class="idf-authors">
+                            <div class="idf-author-names">
+                                <a href="https://kdhrick2222.github.io/">Daehyun Kim</a><sup>1</sup>,&nbsp;&nbsp;
+                                <a href="#">Youngmin Kim</a><sup>1,2</sup>,&nbsp;&nbsp;
+                                <a href="#">Yoon Ju Oh</a><sup>1</sup>,&nbsp;&nbsp;
+                                <a href="https://sites.google.com/view/lliger9/team/taehyunkim">Tae Hyun Kim</a><sup>1†</sup>
+                            </div>
+                            <div class="idf-affiliation">
+                                <sup>1</sup>VILAB, Hanyang University &nbsp;&nbsp;&nbsp;
+                                <sup>2</sup>Agency for Defense Development (ADD)
+                            </div>
+                            <div class="idf-venue">CVPR 2026</div>
+                        </div>
+
+                        <div class="column has-text-centered">
+                            <div class="publication-links">
+                                <span class="link-block">
+                                    <a href="#" class="external-link button is-normal is-rounded is-dark">
+                                        <span class="icon"><i class="fas fa-file-pdf"></i></span>
+                                        <span>Paper</span>
+                                    </a>
+                                </span>
+                                <span class="link-block">
+                                    <a href="#" class="external-link button is-normal is-rounded is-dark">
+                                        <span class="icon"><i class="ai ai-arxiv"></i></span>
+                                        <span>arXiv</span>
+                                    </a>
+                                </span>
+                                <span class="link-block">
+                                    <a href="https://github.com/kdhRick2222/UCMNet"
+                                        class="external-link button is-normal is-rounded is-dark">
+                                        <span class="icon"><i class="fab fa-github"></i></span>
+                                        <span>Code</span>
+                                    </a>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section tldr-section bg-gray">
+        <div class="container is-max-widescreen">
+            <div class="columns is-centered">
+                <div class="column is-10">
+                    <p class="tldr-line has-text-centered">
+                        <span class="tldr-label">✨TL;DR:</span>
+                        UCMNet performs uncertainty-aware adaptive processing to restore high-frequency details in regions with varying degradations.✨ 
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- ══════════ VISUAL RESULTS ══════════ -->
+    <section class="section bg-white">
+        <div class="container is-max-widescreen">
+
+            <h2 class="title has-text-centered">Under-Display Camera Image Restoration Results</h2>
+            <p class="has-text-centered" style="margin-bottom: 28px; color: #555;">
+                Drag the slider on each image to compare <b>Input</b> (left) vs <b>Restored</b> (right).
+            </p>
+
+            <!-- 탭 버튼 -->
+            <div class="dataset-tabs">
+                <button class="dataset-tab-btn is-active" data-target="panel-toled">TOLED</button>
+                <button class="dataset-tab-btn" data-target="panel-poled">POLED</button>
+                <button class="dataset-tab-btn" data-target="panel-synth">SYNTH</button>
+            </div>
+
+            <!-- TOLED -->
+            <div class="dataset-panel is-active" id="panel-toled">
+                <div class="compare-grid">
+
+                    <div class="ucm-compare">
+                        <img class="ucm-compare-base" src="./examples/TOLED_IR/prediction_0.png" alt="TOLED restored 1">
+                        <div class="ucm-compare-overlay">
+                            <img src="./examples/TOLED_IR/input_0.png" alt="TOLED input 1">
+                        </div>
+                        <div class="ucm-compare-label ucm-compare-label-left">Input</div>
+                        <div class="ucm-compare-label ucm-compare-label-right">Restored</div>
+                        <div class="ucm-compare-divider"></div>
+                        <input class="ucm-compare-range" type="range" min="0" max="100" value="50">
+                    </div>
+
+                    <div class="ucm-compare">
+                        <img class="ucm-compare-base" src="./examples/TOLED_IR/prediction_1.png" alt="TOLED restored 2">
+                        <div class="ucm-compare-overlay">
+                            <img src="./examples/TOLED_IR/input_1.png" alt="TOLED input 2">
+                        </div>
+                        <div class="ucm-compare-label ucm-compare-label-left">Input</div>
+                        <div class="ucm-compare-label ucm-compare-label-right">Restored</div>
+                        <div class="ucm-compare-divider"></div>
+                        <input class="ucm-compare-range" type="range" min="0" max="100" value="50">
+                    </div>
+
+                    <div class="ucm-compare">
+                        <img class="ucm-compare-base" src="./examples/TOLED_IR/prediction_2.png" alt="TOLED restored 3">
+                        <div class="ucm-compare-overlay">
+                            <img src="./examples/TOLED_IR/input_2.png" alt="TOLED input 3">
+                        </div>
+                        <div class="ucm-compare-label ucm-compare-label-left">Input</div>
+                        <div class="ucm-compare-label ucm-compare-label-right">Restored</div>
+                        <div class="ucm-compare-divider"></div>
+                        <input class="ucm-compare-range" type="range" min="0" max="100" value="50">
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- POLED -->
+            <div class="dataset-panel" id="panel-poled">
+                <div class="compare-grid">
+
+                    <div class="ucm-compare">
+                        <img class="ucm-compare-base" src="./examples/POLED_IR/prediction_16.png" alt="POLED restored 1">
+                        <div class="ucm-compare-overlay">
+                            <img src="./examples/POLED_IR/input_16.png" alt="POLED input 1">
+                        </div>
+                        <div class="ucm-compare-label ucm-compare-label-left">Input</div>
+                        <div class="ucm-compare-label ucm-compare-label-right">Restored</div>
+                        <div class="ucm-compare-divider"></div>
+                        <input class="ucm-compare-range" type="range" min="0" max="100" value="50">
+                    </div>
+
+                    <div class="ucm-compare">
+                        <img class="ucm-compare-base" src="./examples/POLED_IR/prediction_17.png" alt="POLED restored 2">
+                        <div class="ucm-compare-overlay">
+                            <img src="./examples/POLED_IR/input_17.png" alt="POLED input 2">
+                        </div>
+                        <div class="ucm-compare-label ucm-compare-label-left">Input</div>
+                        <div class="ucm-compare-label ucm-compare-label-right">Restored</div>
+                        <div class="ucm-compare-divider"></div>
+                        <input class="ucm-compare-range" type="range" min="0" max="100" value="50">
+                    </div>
+
+                    <div class="ucm-compare">
+                        <img class="ucm-compare-base" src="./examples/POLED_IR/prediction_18.png" alt="POLED restored 3">
+                        <div class="ucm-compare-overlay">
+                            <img src="./examples/POLED_IR/input_18.png" alt="POLED input 3">
+                        </div>
+                        <div class="ucm-compare-label ucm-compare-label-left">Input</div>
+                        <div class="ucm-compare-label ucm-compare-label-right">Restored</div>
+                        <div class="ucm-compare-divider"></div>
+                        <input class="ucm-compare-range" type="range" min="0" max="100" value="50">
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- SYNTH -->
+            <div class="dataset-panel" id="panel-synth">
+                <div class="compare-grid">
+
+                    <div class="ucm-compare">
+                        <img class="ucm-compare-base" src="./examples/SYNTH_IR/prediciton_1.png" alt="SYNTH restored 1">
+                        <div class="ucm-compare-overlay">
+                            <img src="./examples/SYNTH_IR/input_1.png" alt="SYNTH input 1">
+                        </div>
+                        <div class="ucm-compare-label ucm-compare-label-left">Input</div>
+                        <div class="ucm-compare-label ucm-compare-label-right">Restored</div>
+                        <div class="ucm-compare-divider"></div>
+                        <input class="ucm-compare-range" type="range" min="0" max="100" value="50">
+                    </div>
+
+                    <div class="ucm-compare">
+                        <img class="ucm-compare-base" src="./examples/SYNTH_IR/prediction_2.png" alt="SYNTH restored 2">
+                        <div class="ucm-compare-overlay">
+                            <img src="./examples/SYNTH_IR/input_2.png" alt="SYNTH input 2">
+                        </div>
+                        <div class="ucm-compare-label ucm-compare-label-left">Input</div>
+                        <div class="ucm-compare-label ucm-compare-label-right">Restored</div>
+                        <div class="ucm-compare-divider"></div>
+                        <input class="ucm-compare-range" type="range" min="0" max="100" value="50">
+                    </div>
+
+                    <div class="ucm-compare">
+                        <img class="ucm-compare-base" src="./examples/SYNTH_IR/prediction_3.png" alt="SYNTH restored 3">
+                        <div class="ucm-compare-overlay">
+                            <img src="./examples/SYNTH_IR/input_3.png" alt="SYNTH input 3">
+                        </div>
+                        <div class="ucm-compare-label ucm-compare-label-left">Input</div>
+                        <div class="ucm-compare-label ucm-compare-label-right">Restored</div>
+                        <div class="ucm-compare-divider"></div>
+                        <input class="ucm-compare-range" type="range" min="0" max="100" value="50">
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- ══════════ Comparison with Previous Methods ══════════ -->
+    <section class="section bg-gray">
+        <div class="container is-max-desktop">
+
+            <h2 class="title has-text-centered">Comparison with Previous Methods</h2>
+            <p class="has-text-centered" style="margin-bottom: 28px; color: #555;">
+                Drag the slider to compare <b>previous methods</b> (left) vs <b>UCMNet</b> (right).
+            </p>
+
+            <!-- 탭 버튼 -->
+            <div class="dataset-tabs">
+                <button class="dataset-tab-btn is-active" data-target="cmp-toled">TOLED</button>
+                <button class="dataset-tab-btn" data-target="cmp-poled">POLED</button>
+                <button class="dataset-tab-btn" data-target="cmp-synth">SYNTH</button>
+            </div>
+
+            <!-- TOLED -->
+            <div class="dataset-panel is-active" id="cmp-toled">
+                <div class="compare-grid">
+
+                    <div class="ucm-compare">
+                        <img class="ucm-compare-base" src="./examples/Compare_TOLED/BNUDC1_ucmnet.png" alt="TOLED restored 1">
+                        <div class="ucm-compare-overlay">
+                            <img src="./examples/Compare_TOLED/BNUDC1_bnudc.png" alt="TOLED input 1">
+                        </div>
+                        <div class="ucm-compare-label ucm-compare-label-left">BNUDC</div>
+                        <div class="ucm-compare-label ucm-compare-label-right">Ours</div>
+                        <div class="ucm-compare-divider"></div>
+                        <input class="ucm-compare-range" type="range" min="0" max="100" value="50">
+                    </div>
+
+                    <div class="ucm-compare">
+                        <img class="ucm-compare-base" src="./examples/Compare_TOLED/BNUDC2_ucmnet.png" alt="TOLED restored 2">
+                        <div class="ucm-compare-overlay">
+                            <img src="./examples/Compare_TOLED/BNUDC2_bnudc.png" alt="TOLED input 2">
+                        </div>
+                        <div class="ucm-compare-label ucm-compare-label-left">BNUDC</div>
+                        <div class="ucm-compare-label ucm-compare-label-right">Ours</div>
+                        <div class="ucm-compare-divider"></div>
+                        <input class="ucm-compare-range" type="range" min="0" max="100" value="50">
+                    </div>
+
+                    <div class="ucm-compare">
+                        <img class="ucm-compare-base" src="./examples/Compare_TOLED/FSI1_ucmnet.png" alt="TOLED restored 3">
+                        <div class="ucm-compare-overlay">
+                            <img src="./examples/Compare_TOLED/FSI1_fsi.png" alt="TOLED input 3">
+                        </div>
+                        <div class="ucm-compare-label ucm-compare-label-left">FSI</div>
+                        <div class="ucm-compare-label ucm-compare-label-right">Ours</div>
+                        <div class="ucm-compare-divider"></div>
+                        <input class="ucm-compare-range" type="range" min="0" max="100" value="50">
+                    </div>
+
+                    <div class="ucm-compare">
+                        <img class="ucm-compare-base" src="./examples/Compare_TOLED/FSI2_ucmnet.png" alt="TOLED restored 3">
+                        <div class="ucm-compare-overlay">
+                            <img src="./examples/Compare_TOLED/FSI2_fsi.png" alt="TOLED input 3">
+                        </div>
+                        <div class="ucm-compare-label ucm-compare-label-left">FSI</div>
+                        <div class="ucm-compare-label ucm-compare-label-right">Ours</div>
+                        <div class="ucm-compare-divider"></div>
+                        <input class="ucm-compare-range" type="range" min="0" max="100" value="50">
+                    </div>
+
+                    <div class="ucm-compare">
+                        <img class="ucm-compare-base" src="./examples/Compare_TOLED/DAGF1_ucmnet.png" alt="TOLED restored 3">
+                        <div class="ucm-compare-overlay">
+                            <img src="./examples/Compare_TOLED/DAGF1_dagf.png" alt="TOLED input 3">
+                        </div>
+                        <div class="ucm-compare-label ucm-compare-label-left">DAGF</div>
+                        <div class="ucm-compare-label ucm-compare-label-right">Ours</div>
+                        <div class="ucm-compare-divider"></div>
+                        <input class="ucm-compare-range" type="range" min="0" max="100" value="50">
+                    </div>
+
+                    <div class="ucm-compare">
+                        <img class="ucm-compare-base" src="./examples/Compare_TOLED/DAGF2_ucmnet.png" alt="TOLED restored 3">
+                        <div class="ucm-compare-overlay">
+                            <img src="./examples/Compare_TOLED/DAGF2_dagf.png" alt="TOLED input 3">
+                        </div>
+                        <div class="ucm-compare-label ucm-compare-label-left">DAGF</div>
+                        <div class="ucm-compare-label ucm-compare-label-right">Ours</div>
+                        <div class="ucm-compare-divider"></div>
+                        <input class="ucm-compare-range" type="range" min="0" max="100" value="50">
+                    </div>
+                </div>
+            </div>
+
+            <!-- POLED -->
+            <div class="dataset-panel" id="cmp-poled">
+                <div class="compare-grid">
+
+
+                    <div class="ucm-compare">
+                        <img class="ucm-compare-base" src="./examples/Compare_POLED/BNUDC1_ucmnet.png" alt="TOLED restored 1">
+                        <div class="ucm-compare-overlay">
+                            <img src="./examples/Compare_POLED/BNUDC1_bnudc.png" alt="TOLED input 1">
+                        </div>
+                        <div class="ucm-compare-label ucm-compare-label-left">BNUDC</div>
+                        <div class="ucm-compare-label ucm-compare-label-right">Ours</div>
+                        <div class="ucm-compare-divider"></div>
+                        <input class="ucm-compare-range" type="range" min="0" max="100" value="50">
+                    </div>
+
+                    <div class="ucm-compare">
+                        <img class="ucm-compare-base" src="./examples/Compare_POLED/BNUDC2_ucmnet.png" alt="TOLED restored 2">
+                        <div class="ucm-compare-overlay">
+                            <img src="./examples/Compare_POLED/BNUDC2_bnudc.png" alt="TOLED input 2">
+                        </div>
+                        <div class="ucm-compare-label ucm-compare-label-left">BNUDC</div>
+                        <div class="ucm-compare-label ucm-compare-label-right">Ours</div>
+                        <div class="ucm-compare-divider"></div>
+                        <input class="ucm-compare-range" type="range" min="0" max="100" value="50">
+                    </div>
+
+                    <div class="ucm-compare">
+                        <img class="ucm-compare-base" src="./examples/Compare_POLED/FSI1_ucmnet.png" alt="TOLED restored 3">
+                        <div class="ucm-compare-overlay">
+                            <img src="./examples/Compare_POLED/FSI1_fsi.png" alt="TOLED input 3">
+                        </div>
+                        <div class="ucm-compare-label ucm-compare-label-left">FSI</div>
+                        <div class="ucm-compare-label ucm-compare-label-right">Ours</div>
+                        <div class="ucm-compare-divider"></div>
+                        <input class="ucm-compare-range" type="range" min="0" max="100" value="50">
+                    </div>
+
+                    <div class="ucm-compare">
+                        <img class="ucm-compare-base" src="./examples/Compare_POLED/FSI2_ucmnet.png" alt="TOLED restored 3">
+                        <div class="ucm-compare-overlay">
+                            <img src="./examples/Compare_POLED/FSI2_fsi.png" alt="TOLED input 3">
+                        </div>
+                        <div class="ucm-compare-label ucm-compare-label-left">FSI</div>
+                        <div class="ucm-compare-label ucm-compare-label-right">Ours</div>
+                        <div class="ucm-compare-divider"></div>
+                        <input class="ucm-compare-range" type="range" min="0" max="100" value="50">
+                    </div>
+
+                    <div class="ucm-compare">
+                        <img class="ucm-compare-base" src="./examples/Compare_POLED/DAGF1_ucmnet.png" alt="TOLED restored 3">
+                        <div class="ucm-compare-overlay">
+                            <img src="./examples/Compare_POLED/DAGF1_dagf.png" alt="TOLED input 3">
+                        </div>
+                        <div class="ucm-compare-label ucm-compare-label-left">DAGF</div>
+                        <div class="ucm-compare-label ucm-compare-label-right">Ours</div>
+                        <div class="ucm-compare-divider"></div>
+                        <input class="ucm-compare-range" type="range" min="0" max="100" value="50">
+                    </div>
+
+                    <div class="ucm-compare">
+                        <img class="ucm-compare-base" src="./examples/Compare_POLED/DAGF2_ucmnet.png" alt="TOLED restored 3">
+                        <div class="ucm-compare-overlay">
+                            <img src="./examples/Compare_POLED/DAGF2_dagf.png" alt="TOLED input 3">
+                        </div>
+                        <div class="ucm-compare-label ucm-compare-label-left">DAGF</div>
+                        <div class="ucm-compare-label ucm-compare-label-right">Ours</div>
+                        <div class="ucm-compare-divider"></div>
+                        <input class="ucm-compare-range" type="range" min="0" max="100" value="50">
+                    </div>
+                </div>
+            </div>
+
+            <!-- SYNTH -->
+            <div class="dataset-panel" id="cmp-synth">
+                <div class="compare-grid">
+
+                    <div class="ucm-compare">
+                        <img class="ucm-compare-base" src="./examples/Compare_SYNTH/BNUDC1_ucmnet.png" alt="SYNTH restored 1">
+                        <div class="ucm-compare-overlay">
+                            <img src="./examples/Compare_SYNTH/BNUDC1_bnudc.png" alt="SYNTH input 1">
+                        </div>
+                        <div class="ucm-compare-label ucm-compare-label-left">BNUDC</div>
+                        <div class="ucm-compare-label ucm-compare-label-right">Ours</div>
+                        <div class="ucm-compare-divider"></div>
+                        <input class="ucm-compare-range" type="range" min="0" max="100" value="50">
+                    </div>
+
+                    <div class="ucm-compare">
+                        <img class="ucm-compare-base" src="./examples/Compare_SYNTH/BNUDC2_ucmnet.png" alt="SYNTH restored 1">
+                        <div class="ucm-compare-overlay">
+                            <img src="./examples/Compare_SYNTH/BNUDC2_bnudc.png" alt="SYNTH input 1">
+                        </div>
+                        <div class="ucm-compare-label ucm-compare-label-left">BNUDC</div>
+                        <div class="ucm-compare-label ucm-compare-label-right">Ours</div>
+                        <div class="ucm-compare-divider"></div>
+                        <input class="ucm-compare-range" type="range" min="0" max="100" value="50">
+                    </div>
+
+                    <div class="ucm-compare">
+                        <img class="ucm-compare-base" src="./examples/Compare_SYNTH/BNUDC3_ucmnet.png" alt="SYNTH restored 1">
+                        <div class="ucm-compare-overlay">
+                            <img src="./examples/Compare_SYNTH/BNUDC3_bnudc.png" alt="SYNTH input 1">
+                        </div>
+                        <div class="ucm-compare-label ucm-compare-label-left">BNUDC</div>
+                        <div class="ucm-compare-label ucm-compare-label-right">Ours</div>
+                        <div class="ucm-compare-divider"></div>
+                        <input class="ucm-compare-range" type="range" min="0" max="100" value="50">
+                    </div>
+
+                    <div class="ucm-compare">
+                        <img class="ucm-compare-base" src="./examples/Compare_SYNTH/FSI1_ucmnet.png" alt="SYNTH restored 1">
+                        <div class="ucm-compare-overlay">
+                            <img src="./examples/Compare_SYNTH/FSI1_fsi.png" alt="SYNTH input 1">
+                        </div>
+                        <div class="ucm-compare-label ucm-compare-label-left">FSI</div>
+                        <div class="ucm-compare-label ucm-compare-label-right">Ours</div>
+                        <div class="ucm-compare-divider"></div>
+                        <input class="ucm-compare-range" type="range" min="0" max="100" value="50">
+                    </div>
+
+                    <div class="ucm-compare">
+                        <img class="ucm-compare-base" src="./examples/Compare_SYNTH/FSI2_ucmnet.png" alt="SYNTH restored 1">
+                        <div class="ucm-compare-overlay">
+                            <img src="./examples/Compare_SYNTH/FSI2_fsi.png" alt="SYNTH input 1">
+                        </div>
+                        <div class="ucm-compare-label ucm-compare-label-left">FSI</div>
+                        <div class="ucm-compare-label ucm-compare-label-right">Ours</div>
+                        <div class="ucm-compare-divider"></div>
+                        <input class="ucm-compare-range" type="range" min="0" max="100" value="50">
+                    </div>
+
+                    <div class="ucm-compare">
+                        <img class="ucm-compare-base" src="./examples/Compare_SYNTH/FSI3_ucmnet.png" alt="SYNTH restored 1">
+                        <div class="ucm-compare-overlay">
+                            <img src="./examples/Compare_SYNTH/FSI3_fsi.png" alt="SYNTH input 1">
+                        </div>
+                        <div class="ucm-compare-label ucm-compare-label-left">FSI</div>
+                        <div class="ucm-compare-label ucm-compare-label-right">Ours</div>
+                        <div class="ucm-compare-divider"></div>
+                        <input class="ucm-compare-range" type="range" min="0" max="100" value="50">
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ══════════ ABSTRACT ══════════ -->
+    <section class="section abstract-section bg-white">
+        <div class="container is-max-widescreen">
+            <div class="columns is-centered">
+                <div class="column is-10">
+                    <h2 class="title abstract-title has-text-centered">Abstract</h2>
+                    <div class="content abstract-body">
+                        <p>
+                            Under-display cameras (UDCs) allow for full-screen designs by positioning the imaging sensor underneath the display.
+                            Nonetheless, light diffraction and scattering through the various display layers result in spatially varying and complex degradations, which significantly reduce high-frequency details.
+                            Current PSF-based physical modeling techniques and frequency-separation networks are effective at reconstructing low-frequency structures and maintaining overall color consistency.
+                            However, they still face challenges in recovering fine details when dealing with complex, spatially varying degradation.
+                            To solve this problem, we propose a lightweight Uncertainty-aware Context-Memory Network (UCMNet), for UDC image restoration.
+                            Unlike previous methods that apply uniform restoration, UCMNet performs uncertainty-aware adaptive processing to restore high-frequency details in regions with varying degradations.
+                            The estimated uncertainty maps, learned through an uncertainty-driven loss, quantify spatial uncertainty induced by diffraction and scattering, and guide the Memory Bank to retrieve region-adaptive context from the Context Bank.
+                            This process enables effective modeling of the non-uniform degradation characteristics inherent to UDC imaging.
+                            Leveraging this uncertainty as a prior, UCMNet achieves state-of-the-art performance on multiple benchmarks with 30% fewer parameters than previous models.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ══════════ METHOD ══════════ -->
+    <section class="section bg-gray" id="main-figure">
+        <div class="container is-max-widescreen">
+            <div class="columns is-centered">
+                <div class="column is-11">
+                    <h2 class="title has-text-centered">Overview of the Proposed Method</h2>
+                    <div class="main-figure-block">
+                        <img src="./static/images/ucmnet_overall.jpg" alt="UCMNet Framework Overview">
+                    </div>
+                    <p class="has-text-centered" style="margin-top: 12px;">
+                        Overview of the proposed UCMNet framework.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ══════════ Visual Comparisons ══════════ -->
+    <section class="section bg-white" id="visual-comparisons">
+        <div class="container is-max-widescreen">
+            <div class="columns is-centered">
+                <div class="column is-11">
+                    <h2 class="title has-text-centered">Visual Comparisons with Other Methods</h2>
+                    <div class="main-figure-block">
+                        <img src="./static/images/TOLED.png" alt="UCMNet TOLED Overview">
+                    </div>
+                    <p class="has-text-centered" style="margin-top: 12px;">
+                        Visual comparisons on the TOLED dataset.
+                    </p>
+                    <div class="main-figure-block">
+                        <img src="./static/images/POLED.png" alt="UCMNet POLED Overview">
+                    </div>
+                    <p class="has-text-centered" style="margin-top: 12px;">
+                        Visual comparisons on the POLED dataset.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ══════════ CITATION ══════════ -->
+    <section class="section bg-gray" id="BibTeX">
+        <div class="container is-max-desktop content has-text-centered">
+            <h2 class="title">Citation</h2>
+            <pre class="citation-block"><code>@InProceedings{kim2026UCMNet,
+  title     = {{UCMNet}: Uncertainty-Aware Context Memory Network for Under-Display Camera Image Restoration},
+  author    = {Kim, Daehyun and Kim, Youngmin and Oh, Yoon Ju and Kim, Tae Hyun},
+  booktitle = {Computer Vision and Pattern Recognition (CVPR)},
+  year      = {2026}
+}</code></pre>
+        </div>
+    </section>
+
+
+    <!-- ══════════ FOOTER ══════════ -->
+    <footer class="footer">
+        <div class="container">
+            <div class="columns is-centered">
+                <div class="column is-8">
+                    <div class="content has-text-centered">
+                        <p>The website template was borrowed from <a href="https://github.com/nerfies/nerfies.github.io">Nerfies</a>.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+    <!-- ══════════ JS ══════════ -->
+    <script src="./static/js/fontawesome.all.min.js"></script>
+    <script src="./static/js/index.js"></script>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+
+        // ── 슬라이더 동작 ──
+        function initCompare(block) {
+            var slider   = block.querySelector('.ucm-compare-range');
+            var overlay  = block.querySelector('.ucm-compare-overlay');
+            var divider  = block.querySelector('.ucm-compare-divider');
+
+            function update(value) {
+                block.style.setProperty('--split', value + '%');
+            }
+
+            function fromPointer(e) {
+                var rect  = block.getBoundingClientRect();
+                var x     = (e.clientX - rect.left) / rect.width * 100;
+                x = Math.min(Math.max(x, 0), 100);
+                slider.value = x;
+                update(x);
+            }
+
+            slider.addEventListener('input', function () {
+                update(Number(slider.value));
+            });
+            block.addEventListener('mousemove', fromPointer);
+
+            update(50);
+        }
+
+        document.querySelectorAll('.ucm-compare').forEach(initCompare);
+
+        // ── 탭 전환 (각 섹션 독립적으로) ──
+        function initTabGroup(tabsEl) {
+            var btns = Array.from(tabsEl.querySelectorAll('.dataset-tab-btn'));
+            btns.forEach(function (btn) {
+                btn.addEventListener('click', function () {
+                    // 같은 탭 그룹 내 버튼만 비활성화
+                    btns.forEach(function (b) { b.classList.remove('is-active'); });
+                    btn.classList.add('is-active');
+                    // 같은 섹션 내 패널만 숨기기
+                    var section = tabsEl.closest('section') || tabsEl.parentElement;
+                    section.querySelectorAll('.dataset-panel').forEach(function (p) { p.classList.remove('is-active'); });
+                    document.getElementById(btn.dataset.target).classList.add('is-active');
+                });
+            });
+        }
+        document.querySelectorAll('.dataset-tabs').forEach(initTabGroup);
+
+        // ── navbar burger ──
+        var burger = document.querySelector('.navbar-burger');
+        if (burger) {
+            burger.addEventListener('click', function () {
+                burger.classList.toggle('is-active');
+                document.querySelector('.navbar-menu').classList.toggle('is-active');
+            });
+        }
+
+    });
+    </script>
+
+</body>
+</html>
