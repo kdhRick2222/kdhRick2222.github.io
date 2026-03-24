@@ -1,4 +1,4 @@
-# ProPainter
+# UCMNet
 
 This is the source code to the [UCMNet website](https://kdhrick2222.github.io/projects/UCMNet).
 Feel free to clone this code for your own personal use.
