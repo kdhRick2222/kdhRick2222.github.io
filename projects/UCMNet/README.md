@@ -4,7 +4,7 @@ This is the source code to the [UCMNet website](https://kdhrick2222.github.io/pr
 Feel free to clone this code for your own personal use.
 
 
-If you find ProPainter useful for your work please [star](https://github.com/kdhRick2222/UCMNet) and cite:
+If you find UCMNet useful for your work please [star](https://github.com/kdhRick2222/UCMNet) and cite:
 ```
 @inproceedings{kim2025UCMNet,
   title={UCMNet: Uncertainty-Aware Context Memory Network for Under-Display Camera Image Restoration},
